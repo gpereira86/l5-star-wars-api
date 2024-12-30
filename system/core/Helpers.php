@@ -1,10 +1,7 @@
 <?php
 
-namespace helpers;
+namespace system\core;
 
-use helpers\helpers\string1;
-use const helpers\helpers\URL_DESENVOLVIMENTO;
-use const helpers\helpers\URL_PRODUCAO;
 
 class Helpers
 {
@@ -27,14 +24,14 @@ class Helpers
      * Monta URL de acordo com Ambiente desenvolvimento ou produção
      *
      * @param string|null $url
-     * @return string1
+     * @return string
      */
     public static function url(string $url = null): string
     {
         $server = filter_input(INPUT_SERVER, 'SERVER_NAME');
         $environmentInUse = ($server == 'localhost' ? URL_DESENVOLVIMENTO : URL_PRODUCAO);
 
-        if (str_starts_with($url, '/')) {
+        if (strpos($url, '/') === 0) {
             return$environmentInUse . $url;
         }
 

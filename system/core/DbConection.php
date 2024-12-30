@@ -11,7 +11,7 @@ use PDOException;
  * @author Glauco Pereira <eu@glaucopereira.com>
  * @copyright Copyright (c) 2024, Glauco Pereira
  */
-class Conexao
+class DbConection
 {
 
     private static $instancia;
@@ -52,7 +52,7 @@ class Conexao
     /**
      * Clone (proteção)
      */
-    private function __clone(): void
+    private function __clone()
     {
 
     }
