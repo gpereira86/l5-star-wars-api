@@ -22,6 +22,7 @@ Ao clicar em um dos filmes, deverá ser exibido:
 
 O layout da aplicação pode ser criado por você.
 Faça as exibições em telas distintas, deverá ser possível acessar os detalhes e voltar ao catálogo de filmes.
+
 Em seu backend, crie uma api para consumir a api do Star Wars, podendo utilizar a biblioteca cURL, por exemplo.
 A idade dos filmes deverá ser calculada no backend.
 Seu frontend deve fazer requisições para sua própria api local.
