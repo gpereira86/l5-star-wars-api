@@ -2,15 +2,15 @@
 
 namespace system\core;
 
+/**
+ * Interface for managing and retrieving information about a specific film or episode.
+ *
+ * This interface provides methods to access details such as the name, episode number,
+ * synopsis, release date, director, producers, character names, and the age of the film.
+ */
 interface ApiInterface
 {
-    public function getName(): string;
-    public function getEpisodeNumber(): int;
-    public function getSynopsis(): string;
-    public function getReleaseDate(): string;
-    public function getDirector(): string;
-    public function getProducers(): array;
-    public function getCharacterNames(): array;
-    public function getFilmAge(): string;
+    public function standardizeFilmData(): array;
+
 
 }

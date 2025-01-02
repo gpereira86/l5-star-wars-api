@@ -1,16 +1,25 @@
 <?php
 
+require_once './system/core/Autoloader.php';
 use system\core\ExternalApiConection;
+use system\model\SwapiPy4e;
 
-require_once './system/core/ExternalApiConection.php';
+$app = new SwapiPy4e();
+//$teste = $app->getCharacterNameById('films', '1');
+$teste = $app->standardizeFilmsData();
 
-$teste = ExternalApiConection::makeRequest("https://www.swapi.tech/api/films/1");
+//$teste = ExternalApiConection::makeRequest("https://swapi.py4e.com/api/films/1");
 
-$data = json_decode($teste, true);
+//$data = json_decode($teste, true);
 
-
-foreach ($data["result"]["properties"] as $indice => $dado) {
-    echo $indice . " => ". $dado. "<br>";
+foreach ($teste as $indice => $dado) {
+    if (is_array($dado)) {
+        echo '- ' . $indice . ' => ';
+        print_r($dado);
+        echo "<br><br>";
+    } else {
+        echo '- ' . $indice . ' => ' . $dado . "<br><br>";
+    }
 }
 
 ?>

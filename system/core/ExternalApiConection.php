@@ -25,7 +25,7 @@ class ExternalApiConection
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if(curl_errno($ch)) {
-            echo 'Erro cURL: ' . curl_error($ch);
+            return 'Erro na solicitação. (Erro: ' . curl_error($ch). ')';
         }
 
         curl_close($ch);
@@ -33,6 +33,7 @@ class ExternalApiConection
         if ($httpCode == 200) {
             return $response;
         } else {
+//            return false;
             return false;
         }
     }
