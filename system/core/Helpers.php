@@ -29,7 +29,7 @@ class Helpers
     public static function url(string $url = null): string
     {
         $server = filter_input(INPUT_SERVER, 'SERVER_NAME');
-        $environmentInUse = ($server == 'localhost' ? URL_DESENVOLVIMENTO : URL_PRODUCAO);
+        $environmentInUse = ($server == 'localhost' ? DEVELOPMENT_URL : PRODUCTION_URL);
 
         if (strpos($url, '/') === 0) {
             return$environmentInUse . $url;
@@ -54,6 +54,33 @@ class Helpers
         header("location: {$local}");
         exit();
     }
+
+    public static function summarizeText(string $text, int $limit, string $continue = '...'): string
+    {
+        $cleanText = trim(strip_tags($text));
+
+        if (mb_strlen($cleanText) <= $limit) {
+            return $cleanText;
+        }
+
+        $summarizeText = mb_substr($cleanText, 0, mb_strrpos(mb_substr($cleanText, 0, $limit), ' '));
+
+        return $summarizeText . $continue;
+    }
+
+    public static function slug(string $string): string
+    {
+        $map['a'] = "ÁáãÃÉéÍíÓóÚúÀàÈèÌìÒòÙùÂâÊêÎîÔôÛûÄäËëÏïÖöÜüÇçÑñÝý!@#$%&!*_-+=:;,.?/|'~^°¨ªº´";
+        $map['b'] = 'AaaAEeIiOoUuAaEeIiOoUuAaEeIiOoUuAaEeIiOoUuCcNnYy___________________________';
+
+        $slug = strtr(utf8_decode($string), utf8_decode($map['a']), $map['b']);
+        $slug = strip_tags(trim($slug));
+        $slug = str_replace(' ', '-', $slug);
+        $slug = str_replace(['-----', '----', '--', '-'], '-', $slug);
+
+        return strtolower(utf8_decode($slug));
+    }
+
 
 
 

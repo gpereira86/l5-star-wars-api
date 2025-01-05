@@ -2,15 +2,19 @@
 
 date_default_timezone_set('America/Sao_Paulo');
 
-define('URL_PRODUCAO', '');
-define('URL_DESENVOLVIMENTO', 'http://localhost/l5-test');
 
-define('URL_SITE', 'l5-test/');
-define('URL_ADMIN', 'l5-test/admin/');
+define('PRODUCTION_URL', '');
+define('DEVELOPMENT_URL', 'http://localhost/l5-test');
+
+define('URL_SITE_DEVELOPMENT', '/l5-test/');
+define('URL_SITE_PRODUCTION', '/');
+
+define('URL_API_DEVELOPMENT', '/l5-test/api/');
+define('URL_API_PRODUCTION', '/api/');
 
 define('DB_HOST', 'localhost');
-define('DB_PORTA', '3306');
-define('DB_NOME', 'l5test');
-define('DB_USUARIO', 'root');
-define('DB_SENHA', '');
+define('DB_PORT', '3306');
+define('DB_NAME', 'l5test');
+define('DB_USERNAME', 'root');
+define('DB_PASSCODE', '');
 

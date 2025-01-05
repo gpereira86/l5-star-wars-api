@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /l5-test/
+RewriteRule ^front-end/view/assets/ - [L]
+RewriteRule ^front-end/view/ - [L]
+RewriteRule ^(.*)$ index.php [QSA,L]

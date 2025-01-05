@@ -1,6 +1,6 @@
 <?php
 
-namespace system\core;
+namespace system\model;
 
 /**
  * Interface for managing and retrieving information about a specific film or episode.
@@ -10,7 +10,13 @@ namespace system\core;
  */
 interface ApiInterface
 {
-    public function standardizeFilmData(): array;
+     public function getFilmsData(): array;
+
+    public function standardizeFilmsData(): array;
+
+     public function getAllByField(string $endPoint, string $searchedField): array;
+
+     public function getIdFromUrl($urls): array;
 
 
 }

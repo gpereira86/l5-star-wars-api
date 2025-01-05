@@ -3,12 +3,12 @@ Bom dia,
 Segue a descrição do teste:
 
 Utilizando a api do Star Wars (https://swapi.dev/) como fonte de informação, construa uma tela web com um catálogo
+contendo todos os filmes, ordenados por data de lançamento, exibindo nome e data de lançamento de cada um.
+
     Caso a api https://swapi.dev/ esteja fora do ar, seguem algumas alternativas, que podem ser utilizadas:
         -> https://swapi.py4e.com/
         -> https://www.swapi.tech/
         -> https://swapi-node.vercel.app/
-
-contendo todos os filmes, ordenados por data de lançamento, exibindo nome e data de lançamento de cada um.
 
 Ao clicar em um dos filmes, deverá ser exibido:
     - Nome;

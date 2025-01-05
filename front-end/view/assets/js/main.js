@@ -1,0 +1,1 @@
+const myModalAlternative = new bootstrap.Modal('#filmDetailModal', {})

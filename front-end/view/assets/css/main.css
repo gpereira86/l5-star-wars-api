@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #151515;
+    color: white;
+
+}
+
+.default-color {
+    color: white;
+    background-color: #151515;
+}
+
+body {
+    font-family: arial, sans-serif;
+    line-height: 1.5;
+    color: white;
+    background-color: #151515;
+}
+
+header{
+    font-family: stjelogo-Stjldbl1, STJEDISE, sans-serif;
+}
+
+footer{
+    font-family: 'stjelogo-Stjldbl1', sans-serif;
+}
