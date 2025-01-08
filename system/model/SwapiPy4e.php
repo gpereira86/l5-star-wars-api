@@ -27,28 +27,7 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
 
     public function getFilmsData(): array
     {
-        $standardizedData = $this->standardizeFilmsData();
-
-        $formattedFilms = [];
-        foreach ($standardizedData['data'] as $film) {
-            $formattedFilms[] = [
-                'id' => $film['id'],
-                'name' => $film['name'],
-//                'synopsis' => Helpers::summarizeText($film['synopsis'], 80),
-                'release_date' => $film['release_date'],
-//                'film_age' => $film['film_age'],
-                'moviePoster' => $film['moviePoster'],
-            ];
-        }
-
-        $response = [
-            'method' => $_SERVER['REQUEST_METHOD'],
-            'endpoint' => $_SERVER['REQUEST_URI'],
-            'responseCode' => http_response_code(),
-            'data' => $formattedFilms,
-        ];
-
-        return $response;
+        return $this->standardizeFilmsData();
     }
 
     public function standardizeFilmsData(string $rawDataParameter = null): array
@@ -63,7 +42,7 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
 
         if(isset($rawDataParameter)){
             $film = parent::fetchData($this->filmsEndpoint.$rawDataParameter.'/');
-            $characterIds = $this->getIdFromUrl($film['characters']);
+            $characterIds = parent::getIdFromUrl($film['characters']);
             $characterNames = array_map(fn($id) => $allCharacters[$id] ?? 'Unknown', $characterIds);
 
             $data[] = [
@@ -75,7 +54,8 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
                 'producers' => $film['producer'],
                 'characters' => $characterNames,
                 'film_age' => parent::calculateFilmAge($film['release_date']),
-                'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
+                'moviePoster' => parent::getPosterByMovieName($film['title'])
+//                'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
             ];
 
         } else {
@@ -86,8 +66,9 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
                 return [
                     'name' => $film['title'],
                     'release_date' => $film['release_date'],
-                    'id' =>  $this->getIdFromUrl($film['url']),
-                    'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title'])
+                    'id' => parent::getIdFromUrl($film['url']),
+                    'moviePoster' => parent::getPosterByMovieName($film['title'])
+//                    'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
                 ];
             }, $rawData['results']);
 
@@ -110,26 +91,6 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
     public function getAllByField(string $endPoint,string $searchedField): array
     {
         return $this->fetchAllFromEndpoint($endPoint, $searchedField);
-    }
-
-
-    public function getIdFromUrl($urls):array
-    {
-        if (is_string($urls)) {
-            $urls = [$urls];
-        }
-
-        $ids = [];
-
-        foreach ($urls as $url) {
-            preg_match('/(\d+)\/$/', $url, $matches);
-
-            if (isset($matches[1])) {
-                $ids[] = $matches[1];
-            }
-        }
-
-        return $ids;
     }
 
     public function standardizeData(array $data): array

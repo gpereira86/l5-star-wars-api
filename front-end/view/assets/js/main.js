@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("main-content").style.display = "block";
     }, 2000);
 
-
     loadContent('./front-end/view/header.html', 'header-content');
     loadContent('./front-end/view/menu.html', 'menu-content');
     loadContent('./front-end/view/content.html', 'main-content');
