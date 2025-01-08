@@ -9,6 +9,12 @@ class SiteController
         $this->renderHTML('./front-end/view/base.html');
     }
 
+    public function movieDetailPage(string $movieName){
+
+        $this->renderHTML('./front-end/view/base.html');
+
+    }
+
     public function errorPage(){
         $this->renderHTML('./front-end/view/error.html');
     }

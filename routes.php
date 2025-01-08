@@ -15,6 +15,15 @@ function defineRoutes($uri, $requestMethod)
         $siteController = new SiteController();
         $siteController->index();
 
+    } elseif (preg_match("#^{$baseSiteUri}movie/([^/]+)$#", $uri, $matches) && $requestMethod === 'GET')
+    {
+
+        $movieName = urldecode($matches[1]);
+
+        http_response_code(200);
+        $siteController = new SiteController();
+        $siteController->movieDetailPage($movieName);
+
     } elseif ($uri === "{$baseSiteUri}error-page" && $requestMethod === 'GET')
     {
         http_response_code(404);
