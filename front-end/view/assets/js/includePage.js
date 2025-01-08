@@ -3,7 +3,7 @@ function loadContent(file, elementId) {
     fetch(file)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Falha ao carregar o arquivo: ' + file);
+                throw new Error('Error loading the file' + file);
             }
             return response.text();
         })
@@ -12,19 +12,12 @@ function loadContent(file, elementId) {
             if (element) {
                 element.innerHTML = data;
             } else {
-                console.error(`Elemento com id "${elementId}" não encontrado`);
+                console.error(`Element with id  "${elementId}" not found`);
             }
         })
         .catch(error => {
-            console.error('Erro ao carregar o conteúdo:', error);
+            console.error('Error loading the content', error);
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    loadContent('./front-end/view/header.html', 'header-content');
-    loadContent('./front-end/view/menu.html', 'menu-content');
-    loadContent('./front-end/view/content.html', 'main-content');
-    loadContent('./front-end/view/footer.html', 'footer-content');
-    loadContent('./front-end/view/film-detail.html', 'footer-content');
-    console.info("May the Force be with you!");
-});
+window.loadContent = loadContent;

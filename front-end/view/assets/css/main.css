@@ -13,6 +13,7 @@
 }
 
 body {
+    height: 100%;
     font-family: arial, sans-serif;
     line-height: 1.5;
     color: white;
@@ -21,8 +22,65 @@ body {
 
 header{
     font-family: stjelogo-Stjldbl1, STJEDISE, sans-serif;
+    color: #FFE81F;
 }
+
+.main-page-subtitle {
+    font-family: 'Starjhol', sans-serif;
+    /*color: #FFE81F;*/
+}
+
+/*#main-content {*/
+/*    margin-bottom: 0vh;*/
+/*}*/
+
+@media (max-width: 840px), (max-height: 640px) {
+    header{
+        text-align: center;
+    }
+
+    .main-page-subtitle{
+        text-align: center;
+    }
+
+    #main-content {
+        margin-bottom: 3vh;
+    }
+}
+
+.img-card-max-size{
+    max-height: 250px; /* Limita a altura da imagem */
+    background-color: #151515;
+    padding-top: 10px;
+    object-fit: contain;
+}
+
 
 footer{
     font-family: 'stjelogo-Stjldbl1', sans-serif;
+    color: #FFE81F;
+}
+
+.background-opacity {
+    background-color: rgba(21, 21, 21, 0.80);
+}
+
+.custom-outline-warning {
+    color: #FFE81F;
+    border: 1px solid #FFE81F;
+    background-color: transparent;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.custom-outline-warning:hover {
+    color: black;
+    background-color: #FFE81F;
+    border-color: #FFE81F;
 }

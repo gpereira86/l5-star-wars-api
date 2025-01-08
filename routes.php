@@ -2,7 +2,7 @@
 
 use system\controller\DbRegisterController;
 use system\controller\MoviesController;
-use system\controller\SiteConroller;
+use system\controller\SiteController;
 
 function defineRoutes($uri, $requestMethod)
 {
@@ -12,16 +12,14 @@ function defineRoutes($uri, $requestMethod)
     if($uri === $baseSiteUri && $requestMethod === 'GET'){
 
         http_response_code(200);
-        $siteController = new SiteConroller();
+        $siteController = new SiteController();
         $siteController->index();
 
-//        http_response_code(200);
-//        echo json_encode([
-//            "Method" => $requestMethod,
-//            "responseCode" => 200,
-//            "message" => "Welcome to the Site",
-//            "showErrorPage" => true
-//        ]);
+    } elseif ($uri === "{$baseSiteUri}error-page" && $requestMethod === 'GET')
+    {
+        http_response_code(404);
+        $siteController = new SiteController();
+        $siteController->errorPage();
 
     } elseif ($uri === $baseApiUri && $requestMethod === 'GET')
     {
@@ -58,16 +56,17 @@ function defineRoutes($uri, $requestMethod)
 
     } else
     {
-//        echo json_encode(["error" => "Route not found"]);
-        http_response_code(404);
-        echo json_encode([
-            "error" => "Route not found",
-            "responseCode" => 404,
-//            "URI" => $uri,
-//            "URI_BASE" => $baseUri,
-//            "URI_Rota" => "{$baseUri}films",
-//            "Igualdade" => $uri === "{$baseUri}films",
-            "showErrorPage" => true
-        ]);
+        if(substr($uri, 0, strlen($baseApiUri)) === $baseApiUri){
+            http_response_code(404);
+            echo json_encode([
+                "error" => "Route not found",
+                "responseCode" => 404,
+                "showErrorPage" => true
+            ]);
+        } else {
+            http_response_code(404);
+            $siteController = new SiteController();
+            $siteController->errorPage();
+        }
     }
 }

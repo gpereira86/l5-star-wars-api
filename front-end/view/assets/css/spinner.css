@@ -1,0 +1,84 @@
+/* Tela de carregamento */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #FFE81F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+/* Spinner inspirado em Star Wars */
+.starwars-spinner {
+    position: relative;
+    width: 100px; /* Tamanho do container */
+    height: 100px; /* Tamanho do container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate 2s linear infinite; /* Animação de rotação contínua */
+    background: transparent;
+}
+
+/* Container de lâminas */
+.blade-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Lâminas (sabres) */
+.blade {
+    position: absolute;
+    width: 10px;
+    height: 50px;
+    background: #FFE81F; /* Cor padrão dos sabres */
+    border-radius: 5px;
+    box-shadow: 0 0 10px #FFE81F, 0 0 20px #FFE81F; /* Efeito de brilho */
+    transform-origin: center center; /* Ponto de rotação central */
+    animation: flicker 0.3s infinite alternate; /* Efeito de piscada */
+}
+
+/* Lâminas com diferentes posições */
+.blade:nth-child(1) {
+    transform: rotate(0deg) translateY(-40px);
+}
+.blade:nth-child(2) {
+    transform: rotate(90deg) translateY(-40px);
+}
+.blade:nth-child(3) {
+    transform: rotate(180deg) translateY(-40px);
+}
+.blade:nth-child(4) {
+    transform: rotate(270deg) translateY(-40px);
+}
+
+/* Efeito de rotação do spinner */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Efeito de piscada (brilho) para as lâminas */
+@keyframes flicker {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+.blades-loading-text {
+    font-family: 'Starjhol', sans-serif;
+}

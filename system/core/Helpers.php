@@ -81,7 +81,4 @@ class Helpers
         return strtolower(utf8_decode($slug));
     }
 
-
-
-
 }

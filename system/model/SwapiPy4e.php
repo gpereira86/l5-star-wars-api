@@ -32,11 +32,11 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
         $formattedFilms = [];
         foreach ($standardizedData['data'] as $film) {
             $formattedFilms[] = [
-                'id' => $film['episode'],
+                'id' => $film['id'],
                 'name' => $film['name'],
-                'synopsis' => Helpers::summarizeText($film['synopsis'], 100),
+//                'synopsis' => Helpers::summarizeText($film['synopsis'], 80),
                 'release_date' => $film['release_date'],
-                'film_age' => $film['film_age'],
+//                'film_age' => $film['film_age'],
                 'moviePoster' => $film['moviePoster'],
             ];
         }
@@ -82,22 +82,16 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
 
             $rawData = parent::fetchData($this->filmsEndpoint);
 
-            foreach ($rawData['results'] as $film) {
-                $characterIds = $this->getIdFromUrl($film['characters']);
-                $characterNames = array_map(fn($id) => $allCharacters[$id] ?? 'Unknown', $characterIds);
-
-                $data[] = [
+            $data = array_map(function($film) {
+                return [
                     'name' => $film['title'],
-                    'episode' => $film['episode_id'],
-                    'synopsis' => $film['opening_crawl'],
                     'release_date' => $film['release_date'],
-                    'director' => $film['director'],
-                    'producers' => $film['producer'],
-                    'characters' => $characterNames,
-                    'film_age' => parent::calculateFilmAge($film['release_date']),
-                    'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
+                    'id' =>  $this->getIdFromUrl($film['url']),
+                    'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title'])
                 ];
-            }
+            }, $rawData['results']);
+
+
         }
 
         return [
@@ -136,6 +130,64 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
         }
 
         return $ids;
+    }
+
+    public function standardizeData(array $data): array
+    {
+        $dataToReturn = [];
+
+        $correlationKeyAndNewKey = [
+            'title' => 'name',
+            'episode_id' => 'episode',
+            'opening_crawl' => 'synopsis',
+            'release_date' => 'release_date',
+            'director' => 'director',
+            'producer' => 'producers',
+            'characters' => 'characters',
+            'film_age' => 'film_age',
+            'moviePoster' => 'moviePoster',
+            'url' => 'id',
+            'planets' => 'planets',
+            'starships' => 'starships',
+            'vehicles' => 'vehicles',
+            'species' => 'species',
+            'created' => 'created',
+            'edited' => 'edited'
+        ];
+
+
+        foreach ($data as $key => $value) {
+
+            if (array_key_exists($key, $correlationKeyAndNewKey)) {
+                $data[$correlationKeyAndNewKey[$key]] = $value;
+
+            }
+
+        }
+
+        if (empty($dataToReturn)) {
+            return [
+                'responseCode' => 400,
+                'error' => 'Bad Request',
+                'message' => 'The provided array is invalid or missing required keys.',
+            ];
+        }
+
+        return $dataToReturn;
+
+//            $data[] = [
+//            'name' => $film['title'],
+//            'episode' => $film['episode_id'],
+//            'synopsis' => $film['opening_crawl'],
+//            'release_date' => $film['release_date'],
+//            'director' => $film['director'],
+//            'producers' => $film['producer'],
+//            'characters' => $characterNames,
+//            'film_age' => parent::calculateFilmAge($film['release_date']),
+//            'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
+//            'id' => $this->getIdFromUrl( $film['url']),
+//        ];
+
     }
 
 }

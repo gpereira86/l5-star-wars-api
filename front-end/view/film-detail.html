@@ -1,16 +1,55 @@
-<div class="modal fade" id="filmDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade background-opacity" id="filmDetailModal" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
+
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <h5 class="modal-title fw-bolder" id="contentModalLabel">Movie name</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
-                ...
+
+                <div class="container text-start">
+                    <div class="row">
+                        <div class="col-5">
+                            <img src="./front-end/view/assets/img/spaceship1.png" class="img-fluid" alt="...">
+                        </div>
+                        <div class="col-7">
+
+                            <p class="card-text">
+                                <span class="fw-bolder">Episode number:</span>
+                                <span id="episodeNumber-modal"></span>
+                                <br><br>
+                                <span class="fw-bolder">Synopsis:</span>
+                                <span id="synopsis-modal"></span>
+                                <br><br>
+                                <span class="fw-bolder">Release date: </span>
+                                <span id="releaseDate-modal"></span>
+
+                                <br><br>
+                                <span class="fw-bolder">Movie age: </span>
+                                <span id="filmAge-modal"></span>
+
+                                <br><br>
+                                <span class="fw-bolder">Director: </span>
+                                <span id="director-modal"></span>
+
+                                <br><br>
+                                <span class="fw-bolder">Producer(s): </span>
+                                <span id="producers-modal"></span>
+
+                                <br><br>
+                                <span class="fw-bolder">Character names: </span>
+                                <span id="characters-modal"></span>
+
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
+
         </div>
     </div>
 </div>

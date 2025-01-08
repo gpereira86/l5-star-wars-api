@@ -2,12 +2,17 @@
 
 namespace system\controller;
 
-class SiteConroller
+class SiteController
 {
 
     public function index(){
         $this->renderHTML('./front-end/view/base.html');
     }
+
+    public function errorPage(){
+        $this->renderHTML('./front-end/view/error.html');
+    }
+
 
     public function renderHTML($file, $data = []) {
         if (file_exists($file)) {
@@ -17,9 +22,7 @@ class SiteConroller
             include($file);
             $content = ob_get_clean();
 
-//            include('header.php'); // Cabeçalho
-            echo $content; // Exibe o conteúdo principal
-//            include('footer.php'); // Rodapé
+            echo $content;
         } else {
             echo "Arquivo HTML não encontrado!";
         }
