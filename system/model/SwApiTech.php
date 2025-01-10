@@ -2,34 +2,49 @@
 
 namespace system\model;
 
-
+use system\model\ApiInterface;
 use system\core\ExternalApiConection;
-use system\core\SwapiModel;
-use system\core\Helpers;
+use system\core\SwApiModel;
 
-
-class SwapiPy4e extends SwapiModel implements ApiInterface
+class SwApiTech extends SwApiModel implements ApiInterface
 {
 
     protected string $baseUrl;
     protected string $filmsEndpoint = "films/";
     protected string $peopleEndpoint = "people/";
-    protected string $planetsEndpoint = "planets/";
-    protected string $speciesEndpoint = "species/";
-    protected string $starshipsEndpoint = "starships/";
-    protected string $vehiclesEndpoint = "vehicles/";
 
+    /**
+     * Constructor method to initialize the base URL and call the parent constructor.
+     * It is necessary to provide the API base URL. Example: https://swapi.py4e.com/api/
+     *
+     * @return void
+     */
     public function __construct()
     {
-        $this->baseUrl = 'https://swapi.py4e.com/api/';
+        $this->baseUrl = 'https://www.swapi.tech/';
         parent::__construct($this->baseUrl);
     }
 
+    /**
+     * Retrieves and standardizes film data from the API.
+     *
+     * @return array The array containing standardized film data.
+     */
     public function getFilmsData(): array
     {
         return $this->standardizeFilmsData();
     }
 
+    /**
+     * Processes and standardizes film data based on provided raw data or retrieves all films data
+     * if no specific parameter is supplied. The method fetches film details, character data, calculates
+     * film age, and includes additional metadata such as movie posters.
+     *
+     * @param string|null $rawDataParameter An optional parameter specifying the raw data identifier for a specific film.
+     * @return array An associative array containing metadata such as the HTTP method, the request endpoint,
+     * HTTP response code, and the processed film data. The film data may include title, release date,
+     * episode details, directors, producers, characters, film age, and associated movie posters.
+     */
     public function standardizeFilmsData(string $rawDataParameter = null): array
     {
         $method = $_SERVER['REQUEST_METHOD'];
@@ -55,7 +70,6 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
                 'characters' => $characterNames,
                 'film_age' => parent::calculateFilmAge($film['release_date']),
                 'moviePoster' => parent::getPosterByMovieName($film['title'])
-//                'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
             ];
 
         } else {
@@ -83,72 +97,28 @@ class SwapiPy4e extends SwapiModel implements ApiInterface
         ];
     }
 
+    /**
+     * Retrieves the detailed information of a film by its unique identifier.
+     *
+     * @param string $id The unique identifier of the film.
+     * @return array An array containing the standardized film details.
+     */
     public function getFilmDetailById(string $id): array
     {
         return $this->standardizeFilmsData($id);
     }
 
+    /**
+     * Retrieves all data from the given endpoint based on the specified field.
+     * The method queries the specified endpoint and filters results by the provided field.
+     *
+     * @param string $endPoint The API endpoint to fetch data from.
+     * @param string $searchedField The field used to filter the data.
+     * @return array An array containing the filtered data.
+     */
     public function getAllByField(string $endPoint,string $searchedField): array
     {
         return $this->fetchAllFromEndpoint($endPoint, $searchedField);
-    }
-
-    public function standardizeData(array $data): array
-    {
-        $dataToReturn = [];
-
-        $correlationKeyAndNewKey = [
-            'title' => 'name',
-            'episode_id' => 'episode',
-            'opening_crawl' => 'synopsis',
-            'release_date' => 'release_date',
-            'director' => 'director',
-            'producer' => 'producers',
-            'characters' => 'characters',
-            'film_age' => 'film_age',
-            'moviePoster' => 'moviePoster',
-            'url' => 'id',
-            'planets' => 'planets',
-            'starships' => 'starships',
-            'vehicles' => 'vehicles',
-            'species' => 'species',
-            'created' => 'created',
-            'edited' => 'edited'
-        ];
-
-
-        foreach ($data as $key => $value) {
-
-            if (array_key_exists($key, $correlationKeyAndNewKey)) {
-                $data[$correlationKeyAndNewKey[$key]] = $value;
-
-            }
-
-        }
-
-        if (empty($dataToReturn)) {
-            return [
-                'responseCode' => 400,
-                'error' => 'Bad Request',
-                'message' => 'The provided array is invalid or missing required keys.',
-            ];
-        }
-
-        return $dataToReturn;
-
-//            $data[] = [
-//            'name' => $film['title'],
-//            'episode' => $film['episode_id'],
-//            'synopsis' => $film['opening_crawl'],
-//            'release_date' => $film['release_date'],
-//            'director' => $film['director'],
-//            'producers' => $film['producer'],
-//            'characters' => $characterNames,
-//            'film_age' => parent::calculateFilmAge($film['release_date']),
-//            'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
-//            'id' => $this->getIdFromUrl( $film['url']),
-//        ];
-
     }
 
 }

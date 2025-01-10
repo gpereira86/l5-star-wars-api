@@ -6,16 +6,16 @@ class SiteController
 {
 
     public function index(){
-        $this->renderHTML('./front-end/view/base.html');
+        $this->renderHTML('./front-end/view/index.html');
     }
 
     public function movieDetailPage(string $movieName){
 
-        $this->renderHTML('./front-end/view/base.html');
-
+        $this->renderHTML('./front-end/view/movie-details.html');
     }
 
     public function errorPage(){
+
         $this->renderHTML('./front-end/view/error.html');
     }
 

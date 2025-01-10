@@ -15,4 +15,16 @@ function formatDateUS(dateString) {
     return `${month} ${day}, ${year}`;
 }
 
+function createSlug(texto) {
+    return texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/[\s\W-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
+
 window.formatDateUS = formatDateUS;
+window.createSlug = createSlug;

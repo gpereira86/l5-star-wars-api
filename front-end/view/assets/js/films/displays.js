@@ -2,9 +2,11 @@ function displayFilmsOnPage(movies) {
     movies.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
 
     const filmContainer = document.getElementById('filmContainer');
+
     filmContainer.innerHTML = '';
 
     movies.forEach(movie => {
+        const urlButton = window.location.href+'movie/?name=' + createSlug(movie.name) + '&id=' + movie.id;
         const releaseDateFormatted = formatDateUS(movie.release_date);
 
         const filmCard = `
@@ -23,9 +25,7 @@ function displayFilmsOnPage(movies) {
                             type="button" 
                             class="custom-outline-warning" 
                             data-id="${movie.id}" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#filmDetailModal" 
-                            onclick="fetchFilmDetails(${movie.id})">
+                            onclick="window.location.href = '${urlButton}'">
                             The Force Unveils More
                         </button>
                     </div>
@@ -61,6 +61,31 @@ function displayFilmDetailsInModal(movie) {
     document.getElementById('characters-modal').textContent = movie.characters && movie.characters.length > 0 ? movie.characters.join(', ') : 'N/A';
 }
 
+function displayFilmDetailsNewRoute(movie) {
+
+    document.getElementById('contentNewRouteLabel').textContent = movie.name;
+
+    const imgData = document.querySelector('#contentNewRoute img');
+    imgData.src = movie.moviePoster;
+    imgData.alt = movie.name;
+
+    document.getElementById('episodeNumber').textContent = movie.episode || 'N/A';
+
+    const synopsisModal = document.getElementById('synopsis');
+    if (synopsisModal) {
+        const formattedSynopsis = movie.synopsis
+            .replace(/\r\n\r\n/g, '<br>')
+            .replace(/\r\n/g, ' ');
+        synopsisModal.innerHTML = formattedSynopsis;
+    }
+
+    document.getElementById('releaseDate').textContent = formatDateUS(movie.release_date);
+    document.getElementById('filmAge').textContent = movie.film_age || 'N/A';
+    document.getElementById('director').textContent = movie.director || 'N/A';
+    document.getElementById('producers').textContent = movie.producers || 'N/A';
+    document.getElementById('characters').textContent = movie.characters && movie.characters.length > 0 ? movie.characters.join(', ') : 'N/A';
+
+}
 
 
 window.displayFilmsOnPage = displayFilmsOnPage;

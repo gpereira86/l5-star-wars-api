@@ -14,7 +14,7 @@ define('URL_API_PRODUCTION', '/api/');
 
 define('DB_HOST', 'localhost');
 define('DB_PORT', '3306');
-define('DB_NAME', 'l5test');
+define('DB_NAME', 'l5transactions');
 define('DB_USERNAME', 'root');
 define('DB_PASSCODE', '');
 

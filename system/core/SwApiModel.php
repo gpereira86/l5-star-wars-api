@@ -4,7 +4,7 @@ namespace system\core;
 
 use system\core\ExternalApiConection;
 
-class SwapiModel
+class SwApiModel
 {
     protected string $baseUrl;
     protected string $posterUrl = "https://api.themoviedb.org/3/search/movie?query=";
@@ -78,21 +78,23 @@ class SwapiModel
     {
         $items = [];
         $nextPage = $endpoint;
-
+        $page = 1;
         while ($nextPage) {
             $response = json_decode($this->getExternalApiData($nextPage), true);
 
             if (isset($response['results'])) {
                 foreach ($response['results'] as $item) {
-                    preg_match('/(\d+)\/$/', $item['url'], $matches);
-                    $id = $matches[1] ?? null;
+                    $getId = $this->getIdFromUrl($item['url']);
+                    $id = $getId[0] ?? null;
                     if ($id && isset($item[$fieldToMap])) {
                         $items[$id] = $item[$fieldToMap];
                     }
                 }
             }
 
-            $nextPage = $response['next'] ?? null;
+            $page += 1;
+            $nextPage = isset($response['next']) ? $endpoint.'?page='. $page . '&format=json' : null;
+
         }
 
         return $items;

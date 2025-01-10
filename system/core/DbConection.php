@@ -21,7 +21,7 @@ class DbConection
      *
      * @return PDO
      */
-    public static function getInstancia(): PDO
+    public static function getInstance(): PDO
     {
         if (empty(self::$instancia)) {
 
@@ -35,7 +35,7 @@ class DbConection
                 ]);
             } catch (PDOException $ex) {
 
-                die("Erro de Conexão >>> " . $ex->getMessage());
+                die("Connection error >>> " . $ex->getMessage());
             }
         }
         return self::$instancia;

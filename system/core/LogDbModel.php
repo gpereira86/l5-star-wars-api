@@ -6,60 +6,12 @@ use system\core\DbConection;
 
 abstract class LogDbModel
 {
-    protected $dataSet;       // Armazena os dados do modelo
-    protected $query;       // Armazena a query SQL construída
     protected $erro;        // Armazena erros ocorridos durante operações
-    protected $parametros;  // Parâmetros para consultas preparadas
     protected $tabela;      // Nome da tabela do banco de dados
-    protected $ordem;       // Cláusula de ordenação da query
-    protected $limite;      // Cláusula de limite da query
-    protected $offset;      // Cláusula de offset da query
 
     public function __construct(string $tabela)
     {
         $this->tabela = $tabela;
-    }
-
-    public function __set($nome, $valor)
-    {
-        if (empty($this->dataSet)) {
-            $this->dataSet = new \stdClass();
-        }
-
-        $this->dataSet->$nome = $valor;
-    }
-
-    public function __isset($nome)
-    {
-        return isset($this->dataSet->$nome);
-    }
-
-    public function __get($nome)
-    {
-        return ($this->dataSet->$nome ?? null);
-    }
-
-    public function ordem(string $ordem)
-    {
-        $this->ordem = " ORDER BY {$ordem}";
-        return $this;
-    }
-
-    public function limite(string $limite)
-    {
-        $this->limite = " LIMIT {$limite}";
-        return $this;
-    }
-
-    public function offset(string $offset)
-    {
-        $this->offset = " OFFSET {$offset}";
-        return $this;
-    }
-
-    public function dados()
-    {
-        return $this->dataSet;
     }
 
     private function dataFilter(array $dataSet)
@@ -73,45 +25,50 @@ abstract class LogDbModel
         return $filter;
     }
 
-    private function validateLogData(array $dados):bool
+    public function validateLogData(array $data): array
     {
 
-        if (empty($array) || $array !== null){
-            return false;
+        $errors = [];
+
+        if (empty($data['request_method'])) {
+            $errors[] = 'request_method is required';
         }
 
-        foreach ($dados as $key => $value) {
-            if (empty($value)) {return false;}
+        if (empty($data['endpoint'])) {
+            $errors[] = 'endpoint is required';
         }
 
-        return true;
+        if (empty($data['response_code'])) {
+            $errors[] = 'response_code is required';
+        }
+
+        return $errors;
 
     }
 
-    protected function register(array $dados)
+    protected function register(array $data)
     {
-        if (!$this->validateLogData($dados)) {
-            return null;
-        }
 
         try {
-            $colunas = implode(',', array_keys($dados));
-            $valores = ':' . implode(',:', array_keys($dados));
-            $query = "INSERT INTO " . $this->tabela . "({$colunas}) VALUES ({$valores})";
+            $columns = implode(',', array_keys($data));  // Exemplo: 'timestamp, request_method, endpoint, response_code'
+            $values = ':' . implode(',:', array_keys($data));  // Exemplo: ':timestamp, :request_method, :endpoint'
 
-            $stmt = DbConection::getInstancia()->prepare($query);
-            $stmt->execute($this->dataFilter($dados));
+            $query = "INSERT INTO " . $this->tabela . "({$columns}) VALUES ({$values})";
 
-            return DbConection::getInstancia()->lastInsertId();
+            $stmt = DbConection::getInstance()->prepare($query);
+            $stmt->execute($this->dataFilter($data));
+
+            return DbConection::getInstance()->lastInsertId();
         } catch (\PDOException $ex) {
             $this->erro = $ex->getCode();
             return null;
         }
     }
 
-    public function save()
+
+    public function save(array $data)
     {
-        return $this->register($this->dataSet);
+        return $this->register($data);
     }
 
 

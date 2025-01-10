@@ -1,5 +1,24 @@
+#RewriteEngine On
+#RewriteBase /l5-test/
+##RewriteRule ^front-end/view/assets/ - [L]
+#RewriteRule ^front-end/view/ - [L]
+#RewriteRule ^(.*)$ index.php [QSA,L]
+
+
 RewriteEngine On
 RewriteBase /l5-test/
-RewriteRule ^front-end/view/assets/ - [L]
-RewriteRule ^front-end/view/ - [L]
+
+# Não reescrever solicitações para arquivos existentes (CSS, JS, imagens, etc.)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Não reescrever solicitações para diretórios existentes
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+## Exceção para o caminho 'front-end/view/'
+#RewriteRule ^front-end/view/ - [L]
+
+# Reescrever todas as outras solicitações para index.php
 RewriteRule ^(.*)$ index.php [QSA,L]
+
