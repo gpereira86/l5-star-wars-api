@@ -6,55 +6,71 @@ use PDO;
 use PDOException;
 
 /**
- * Conexão com o Banco de Dados
+ * Database Connection Class
  *
- * @author Glauco Pereira <eu@glaucopereira.com>
- * @copyright Copyright (c) 2024, Glauco Pereira
+ * This class handles the connection to the MySQL database using the PDO (PHP Data Objects) extension.
+ * It provides a singleton instance of the PDO connection to ensure that only one connection is made
+ * throughout the application lifecycle.
  */
 class DbConection
 {
 
-    private static $instancia;
+    private static $instancia; // Singleton instance of the PDO connection
 
     /**
-     * Conexão PDO Banco MySql usando constantes de sistema do arquivo de configurações
+     * Returns a PDO instance (singleton).
      *
-     * @return PDO
+     * This method creates a new PDO connection to the MySQL database using the configuration constants
+     * from the system's configuration file. If an instance already exists, it returns the existing
+     * instance to ensure only one connection is used throughout the application.
+     *
+     * @return PDO The PDO instance representing the connection to the database.
+     * @throws PDOException If the connection cannot be established, an exception is thrown.
      */
     public static function getInstance(): PDO
     {
+        // If the instance doesn't exist, create a new one
         if (empty(self::$instancia)) {
 
             try {
-
-                self::$instancia = new PDO('mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME, DB_USERNAME, DB_PASSCODE, [
-                    PDO::MYSQL_ATTR_INIT_COMMAND => "set NAMES utf8",
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    PDO::ATTR_CASE => PDO::CASE_NATURAL
-                ]);
+                // Create the PDO connection
+                self::$instancia = new PDO(
+                    'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME,
+                    DB_USERNAME,
+                    DB_PASSCODE,
+                    [
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "set NAMES utf8", // Set character encoding to UTF-8
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Enable exception mode for errors
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, // Fetch results as objects
+                        PDO::ATTR_CASE => PDO::CASE_NATURAL // Retain original case of column names
+                    ]
+                );
             } catch (PDOException $ex) {
-
+                // If connection fails, output the error message and terminate
                 die("Connection error >>> " . $ex->getMessage());
             }
         }
-        return self::$instancia;
+        return self::$instancia; // Return the PDO instance
     }
 
     /**
-     * Contrutor (proteção)
+     * Constructor (protected).
+     *
+     * The constructor is protected to prevent creating instances directly via the constructor.
+     * The class follows the Singleton design pattern, so the only way to obtain an instance is
+     * through the `getInstance()` method.
      */
     protected function __construct()
     {
-
     }
 
     /**
-     * Clone (proteção)
+     * Clone (private).
+     *
+     * The clone method is private to prevent cloning of the instance.
+     * As this class follows the Singleton pattern, cloning would violate the pattern.
      */
     private function __clone()
     {
-
     }
-
 }

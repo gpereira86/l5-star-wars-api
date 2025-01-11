@@ -104,7 +104,6 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
                     'release_date' => $film['release_date'],
                     'id' => parent::getIdFromUrl($film['url']),
                     'moviePoster' => parent::getPosterByMovieName($film['title'])
-//                    'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
                 ];
             }, $rawData['results']);
 

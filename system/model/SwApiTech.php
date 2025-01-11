@@ -121,4 +121,13 @@ class SwApiTech extends SwApiModel implements ApiInterface
         return $this->fetchAllFromEndpoint($endPoint, $searchedField);
     }
 
+    public function keyAdjusting(array $data): array
+    {
+        $data['results'] = $data['properties'];
+
+        unset($data['oldKey']);
+
+        return $data;
+    }
+
 }

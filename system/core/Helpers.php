@@ -2,13 +2,19 @@
 
 namespace system\core;
 
-
+/**
+ * Helper class providing various utility methods for the application.
+ *
+ * This class includes methods for working with URLs, redirecting, summarizing text, and creating slugs. These methods are commonly used across the application to simplify common tasks.
+ */
 class Helpers
 {
     /**
-     *  Retorna Verdadeiro ou falso para ambiente localhost
+     * Returns true if the environment is localhost, false otherwise.
      *
-     * @return bool
+     * This method checks the `SERVER_NAME` to determine if the application is running on localhost.
+     *
+     * @return bool True if the environment is localhost, false otherwise.
      */
     public static function localhost(): bool
     {
@@ -21,10 +27,12 @@ class Helpers
     }
 
     /**
-     * Monta URL de acordo com Ambiente desenvolvimento ou produção
+     * Constructs a full URL based on the current environment (development or production).
      *
-     * @param string|null $url
-     * @return string
+     * This method uses the `SERVER_NAME` to determine whether the environment is local or production, and then appends the provided URL to the base URL for the appropriate environment.
+     *
+     * @param string|null $url The URL to append to the environment base URL.
+     * @return string The full URL.
      */
     public static function url(string $url = null): string
     {
@@ -32,17 +40,18 @@ class Helpers
         $environmentInUse = ($server == 'localhost' ? DEVELOPMENT_URL : PRODUCTION_URL);
 
         if (strpos($url, '/') === 0) {
-            return$environmentInUse . $url;
+            return $environmentInUse . $url;
         }
 
-        return$environmentInUse . '/' . $url;
+        return $environmentInUse . '/' . $url;
     }
 
-
     /**
-     * Redirecionamento de URL simplidicado, apenas com o slug
+     * Simplified URL redirection using just the slug.
      *
-     * @param string|null $url
+     * This method redirects the user to a new URL based on the provided slug. If no slug is provided, it redirects to the home page.
+     *
+     * @param string|null $url The slug or URL to redirect to.
      * @return void
      */
     public static function redirectUrl(string $url = null): void
@@ -55,6 +64,16 @@ class Helpers
         exit();
     }
 
+    /**
+     * Summarizes the provided text to a given character limit.
+     *
+     * This method trims and strips any HTML tags from the provided text, and then shortens the text to the specified character limit. If the text exceeds the limit, it appends a continuation string (e.g., '...').
+     *
+     * @param string $text The text to summarize.
+     * @param int $limit The character limit for the summarized text.
+     * @param string $continue The string to append if the text is shortened (default is '...').
+     * @return string The summarized text.
+     */
     public static function summarizeText(string $text, int $limit, string $continue = '...'): string
     {
         $cleanText = trim(strip_tags($text));
@@ -68,6 +87,14 @@ class Helpers
         return $summarizeText . $continue;
     }
 
+    /**
+     * Converts a string into a URL-friendly slug.
+     *
+     * This method converts special characters, accents, and spaces into a URL-friendly format, where words are separated by hyphens.
+     *
+     * @param string $string The string to convert into a slug.
+     * @return string The generated slug.
+     */
     public static function slug(string $string): string
     {
         $map['a'] = "ÁáãÃÉéÍíÓóÚúÀàÈèÌìÒòÙùÂâÊêÎîÔôÛûÄäËëÏïÖöÜüÇçÑñÝý!@#$%&!*_-+=:;,.?/|'~^°¨ªº´";
@@ -80,5 +107,4 @@ class Helpers
 
         return strtolower(utf8_decode($slug));
     }
-
 }
