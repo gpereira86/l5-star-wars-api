@@ -14,7 +14,7 @@
  *       - Use environment variables, configuration files, or secure vaults to manage secrets securely.
  *       - This file is meant as an example and should not be included in your production version.
  *
- * @guidance: **Don’t forget to rename this file to `config.php` or another appropriate name as per your project’s naming convention.**
+ * @guidance: **Don’t forget to rename this file to `secureConfig.php` or another appropriate name as per your project’s naming convention.**
  */
 define('FILM_IMAGE_API_KEY', ''); // Your API key for the movie poster service goes here.
 
