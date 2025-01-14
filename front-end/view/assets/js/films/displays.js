@@ -58,7 +58,7 @@ function displayFilmDetailsInModal(movie) {
     document.getElementById('filmAge-modal').textContent = movie.film_age || 'N/A';
     document.getElementById('director-modal').textContent = movie.director || 'N/A';
     document.getElementById('producers-modal').textContent = movie.producers || 'N/A';
-    document.getElementById('characters-modal').textContent = movie.characters && movie.characters.length > 0 ? movie.characters.join(', ') : 'N/A';
+    document.getElementById('characters-modal').textContent = movie.charactersnames && movie.charactersnames.length > 0 ? movie.charactersnames.join(', ') : 'N/A';
 }
 
 function displayFilmDetailsNewRoute(movie) {
@@ -83,10 +83,20 @@ function displayFilmDetailsNewRoute(movie) {
     document.getElementById('filmAge').textContent = movie.film_age || 'N/A';
     document.getElementById('director').textContent = movie.director || 'N/A';
     document.getElementById('producers').textContent = movie.producers || 'N/A';
-    document.getElementById('characters').textContent = movie.characters && movie.characters.length > 0 ? movie.characters.join(', ') : 'N/A';
+    document.getElementById('characters').textContent = movie.charactersnames && movie.charactersnames.length > 0 ? movie.charactersnames.join(', ') : 'N/A';
+    // document.getElementById('trailer').textContent = movie.movieTrailer || 'N/A';
+
+    document.getElementById('openTrailerButton').addEventListener('click', function () {
+        const trailerUrl = movie.movieTrailer; // Get the trailer URL from the button
+        if (trailerUrl !== 'N/A') {
+            window.open(trailerUrl, '_blank'); // Open the trailer in a new window/tab
+        } else {
+            console.log('No trailer URL available');
+        }
+    });
+
 
 }
-
 
 window.displayFilmsOnPage = displayFilmsOnPage;
 window.displayFilmDetailsInModal = displayFilmDetailsInModal;

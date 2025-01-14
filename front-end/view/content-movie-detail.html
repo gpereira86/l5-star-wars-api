@@ -15,7 +15,7 @@
             <span class="d-inline ms-2"> or </span>
             <button class="d-inline ms-2 custom-outline-warning" onclick="goBack()">Back to the galaxy's origin</button>
             <br>
-            <p class="card-text text-start mt-3">
+            <div class="card-text text-start mt-3">
                 <span class="fw-bolder">Episode number:</span>
                 <span id="episodeNumber"></span>
                 <br><br>
@@ -41,7 +41,14 @@
                 <span class="fw-bolder">Character names: </span>
                 <span id="characters"></span>
 
-            </p>
+                <br><br>
+<!--                <span class="fw-bolder">Trailer:  </span>-->
+<!--                <span id="trailer"></span>-->
+            </div>
+            <button id="openTrailerButton" class="custom-outline-warning text-center" data-trailer-url="https://www.youtube.com/watch?v=exampleTrailerId">
+                The Force is calling – Watch the Trailer!
+            </button>
+
         </div>
     </div>
 </div>

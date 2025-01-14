@@ -22,6 +22,8 @@ class SwApiModel
 {
     protected string $baseUrl;
     protected string $posterUrl = URL_API_MOVIE_POSTER;
+    protected string $youtubeUrl = URL_YOUTUBE_MOVIE_TRAILER;
+
 
 
     /**
@@ -47,10 +49,12 @@ class SwApiModel
      * @param bool $isPosterCall Indicates whether the call is to fetch poster data. Defaults to false.
      * @return mixed The response data from the external API on success, or false on failure.
      */
-    private function getExternalApiData(string $endpoint, bool $isPosterCall = false)
+    private function getExternalApiData(string $endpoint, bool $isPosterCall = false, bool $isYoutubeCall=false)
     {
         if ($isPosterCall) {
             $url = $this->posterUrl . urlencode('Star Wars: '.$endpoint). "&api_key=" . FILM_IMAGE_API_KEY;
+        } elseif ($isYoutubeCall){
+            $url = $this->youtubeUrl.$endpoint;
         } else {
             $url = $this->baseUrl . $endpoint;
         }
@@ -75,7 +79,7 @@ class SwApiModel
      * @param string $movieName The name of the movie for which the poster image URL is to be retrieved.
      * @return string The URL of the movie poster if available, or a default message indicating the poster is not available.
      */
-    public function getPosterByMovieName(string $movieName): string
+    public function getLinkPosterByMovieName(string $movieName): string
     {
         $movieData = json_decode($this->getExternalApiData($movieName, true), true);
 
@@ -84,6 +88,19 @@ class SwApiModel
         } else {
             return 'Poster not available';
         }
+    }
+
+    public function getYoutubeLinkFound(string $params, bool $isYoutube)
+    {
+        $youtubeLink = $this->getExternalApiData($params, false, $isYoutube);
+
+        if (preg_match('/\/watch\?v=([a-zA-Z0-9_-]{11})/', $youtubeLink, $matches)) {
+            $videoId = $matches[1];
+            return 'https://www.youtube.com/watch?v='.$videoId;
+        } else {
+            return "Youtube link not found";
+        }
+
     }
 
 
@@ -98,7 +115,23 @@ class SwApiModel
      */
     public function fetchData(string $endpoint): array
     {
-        return json_decode($this->getExternalApiData($endpoint), true);
+        $response = $this->getExternalApiData($endpoint);  // Obtém os dados da API
+
+        if ($response === false) {
+            // Se a resposta falhou, retorna um array vazio ou loga o erro
+            error_log("Erro ao buscar dados do endpoint: " . $endpoint);
+            return [];
+        }
+
+        $data = json_decode($response, true);  // Decodifica a resposta JSON
+
+        if (is_null($data)) {
+            // Se o JSON for inválido, retorna um array vazio ou loga o erro
+            error_log("Resposta inválida do JSON para o endpoint: " . $endpoint);
+            return [];
+        }
+
+        return $data;  // Retorna os dados como array
     }
 
     /**

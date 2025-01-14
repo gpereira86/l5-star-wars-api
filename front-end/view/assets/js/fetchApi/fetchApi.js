@@ -1,22 +1,26 @@
 // Em fetchApi.js
 async function fetchApi(endpoint, options = {}) {
+    url = `${globalApiUrl}log-register`
+
     try {
         const response = await fetch(endpoint, options);
         if (!response.ok) {
-            fetchLogResponse(
-                options.method || 'GET',
-                endpoint,
-                response.status
-            );
+            // fetchLogResponse(
+            //     globalLogRegisterUrl,
+            //     options.method || 'GET',
+            //     endpoint,
+            //     response.status
+            // );
             throw new Error(`Request error: ${response.status}`);
 
         }
         const data = await response.json();
 
-        fetchLogResponse(
-            data.method,
-            data.endpoint,
-            data.responseCode);
+        // fetchLogResponse(
+        //     globalLogRegisterUrl,
+        //     data.method,
+        //     data.endpoint,
+        //     data.responseCode);
 
         return data;
     } catch (error) {
@@ -25,30 +29,30 @@ async function fetchApi(endpoint, options = {}) {
     }
 }
 
-async function fetchFilmDetails(id, modal = true) {
-    const apiUrl = `http://localhost/l5-test/api/films/details/`;
-    let elementId = 'filmDetailModal';
+// async function fetchFilmDetails(id, modal = true) {
+//     const apiUrl = `${globalApiUrl}films/details/`;
+//     let elementId = 'filmDetailModal';
+//
+//     if(modal){
+//         showSpinner(document.getElementById(elementId));
+//
+//         setTimeout(() => {
+//             hideSpinner(document.getElementById(elementId));
+//             document.getElementById(elementId).style.display = "block";
+//         }, 3000);
+//
+//         getApiData(apiUrl, modal, id);
+//
+//     } else{
+//         let data = [apiUrl, modal, id]
+//         sessionStorage.setItem('movieId', data);
+//         window.location.href = window.location.pathname + "movie/teste";
+//
+//     }
+// }
 
-    if(modal){
-        showSpinner(document.getElementById(elementId));
-
-        setTimeout(() => {
-            hideSpinner(document.getElementById(elementId));
-            document.getElementById(elementId).style.display = "block";
-        }, 3000);
-
-        getApiData(apiUrl, modal, id);
-
-    } else{
-        let data = [apiUrl, modal, id]
-        sessionStorage.setItem('movieId', data);
-        window.location.href = window.location.pathname + "movie/teste";
-
-    }
-}
-
-function fetchLogResponse(request_method, endpoint, response_code) {
-    const apiUrl = "http://localhost/l5-test/api/log-register";
+function fetchLogResponse(url, request_method, endpoint, response_code) {
+    const apiUrl = url;
 
     const data = {
         request_method: request_method,
@@ -78,4 +82,4 @@ function fetchLogResponse(request_method, endpoint, response_code) {
 }
 
 window.fetchApi = fetchApi;
-window.fetchFilmDetails = fetchFilmDetails;
+// window.fetchFilmDetails = fetchFilmDetails;

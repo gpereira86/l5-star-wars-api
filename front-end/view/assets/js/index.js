@@ -2,9 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let baseUrl = './';
     let content = baseUrl + 'front-end/view/content.html';
     let idContent = 'main-content';
-    let apiUrl = 'http://localhost/l5-test/api/films';
+    let apiUrl = `${globalApiUrl}films`;
 
     showSpinner(document.body);
+
 
     loadContent(`${baseUrl}front-end/view/header.html`, 'header-content');
     loadContent(content, idContent);
@@ -20,6 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
         hideSpinner(document.body);
         document.getElementById(idContent).style.display = "block";
-    }, 2000);
+    }, 3000);
 
 });

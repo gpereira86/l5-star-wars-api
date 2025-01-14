@@ -15,7 +15,8 @@ class SiteController
      *
      * This method loads the index.html file from the front-end views.
      */
-    public function index(){
+    public function index()
+    {
         $this->renderHTML('./front-end/view/index.html');
     }
 
@@ -26,7 +27,10 @@ class SiteController
      *
      * @param string $movieName The name of the movie for which details are to be displayed.
      */
-    public function movieDetailPage(string $movieName){
+    public function movieDetailPage(string $movieName=null)
+    {
+//        $data = ['movieName' => $movieName];  // Pass movieName to view
+//        $this->renderHTML('./front-end/view/movie-details.html', $data);
         $this->renderHTML('./front-end/view/movie-details.html');
     }
 
@@ -35,7 +39,8 @@ class SiteController
      *
      * This method loads the error.html file from the front-end views.
      */
-    public function errorPage(){
+    public function errorPage()
+    {
         $this->renderHTML('./front-end/view/error.html');
     }
 
@@ -44,22 +49,29 @@ class SiteController
      *
      * This method loads the specified HTML file, optionally extracts data
      * passed as an associative array, and then outputs the rendered content.
-     * If the HTML file doesn't exist, it will display an error message.
+     * If the HTML file doesn't exist, it will throw an exception.
      *
      * @param string $file The path to the HTML file to be rendered.
      * @param array $data Optional data to be passed to the HTML file.
      */
-    public function renderHTML($file, $data = []) {
-        if (file_exists($file)) {
+    public function renderHTML($file, $data = [])
+    {
+        try {
+            if (!file_exists($file)) {
+                throw new \Exception("HTML file not found!");
+            }
+
+            // Explicitly pass data to avoid overwriting variables
+            ob_start();  // Start output buffering
             extract($data);  // Extracts data array into variables
 
-            ob_start();  // Start output buffering
             include($file);  // Include the HTML file
             $content = ob_get_clean();  // Get the content of the buffer and clean it
 
             echo $content;  // Output the rendered content
-        } else {
-            echo "HTML file not found!";  // Display error message if file doesn't exist
+        } catch (\Exception $e) {
+            // Handle error with a custom message or logging
+            echo "Error: " . $e->getMessage();  // You could also log this message
         }
     }
 }

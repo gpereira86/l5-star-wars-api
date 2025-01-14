@@ -34,6 +34,7 @@ define('URL_API_PRODUCTION', '/api/'); // API URL in the production environment
 
 // API URL for fetching movie posters from The Movie Database (TMDb)
 define('URL_API_MOVIE_POSTER', 'https://api.themoviedb.org/3/search/movie?query='); // URL for fetching movie poster data
+define('URL_YOUTUBE_MOVIE_TRAILER', 'https://www.youtube.com/results?search_query='); // URL for fetching movie poster data
 
 // Database connection settings
 define('DB_HOST', 'localhost'); // Database server host (typically localhost)

@@ -85,4 +85,8 @@ footer{
         margin-bottom: 3vh;
     }
 
+    #openTrailerButton{
+        font-size: 0.8rem;
+    }
+
 }

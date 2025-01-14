@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     let baseUrl = './../';
     let content = baseUrl + 'front-end/view/content-movie-detail.html';
@@ -7,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const movieId = urlParams.get('id');
 
 
-    let apiUrl = `http://localhost/l5-test/api/films/details/`;
+    let apiUrl = `${globalApiUrl}films/details/`;
 
     showSpinner(document.body);
 
@@ -23,6 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
         hideSpinner(document.body);
         document.getElementById(idContent).style.display = "block";
-    }, 2000);
+    }, 3000);
 
 });

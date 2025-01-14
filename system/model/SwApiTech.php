@@ -69,7 +69,7 @@ class SwApiTech extends SwApiModel implements ApiInterface
                 'producers' => $film['producer'],
                 'characters' => $characterNames,
                 'film_age' => parent::calculateFilmAge($film['release_date']),
-                'moviePoster' => parent::getPosterByMovieName($film['title'])
+                'moviePoster' => parent::getLinkPosterByMovieName($film['title'])
             ];
 
         } else {
@@ -81,7 +81,7 @@ class SwApiTech extends SwApiModel implements ApiInterface
                     'name' => $film['title'],
                     'release_date' => $film['release_date'],
                     'id' => parent::getIdFromUrl($film['url']),
-                    'moviePoster' => parent::getPosterByMovieName($film['title'])
+                    'moviePoster' => parent::getLinkPosterByMovieName($film['title'])
 //                    'moviePoster' => ExternalApiConection::getPosterWithFilmName($film['title']),
                 ];
             }, $rawData['results']);

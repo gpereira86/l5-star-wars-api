@@ -2,7 +2,10 @@
 
 namespace system\core;
 
+use DateTime;
+use Exception;
 use system\core\DbConection;
+use system\model\UserModel;
 
 /**
  * Abstract class for logging data to a database.
@@ -19,8 +22,13 @@ use system\core\DbConection;
 abstract class LogDbModel
 {
 
-    protected $erro;
-    protected $tabela;
+    protected $table;
+    protected $params;
+    protected $sort;
+    protected $limit;
+    protected $offset;
+    protected $query;
+
 
     /**
      * Constructor method for `LogDbModel` class.
@@ -29,9 +37,9 @@ abstract class LogDbModel
      *
      * @param string $tabela The name of the table in the database.
      */
-    public function __construct(string $tabela)
+    public function __construct(string $table)
     {
-        $this->tabela = $tabela;
+        $this->table = $table;
     }
 
     /**
@@ -53,33 +61,58 @@ abstract class LogDbModel
         return $filter;
     }
 
-    /**
-     * Validates the log data before saving it to the database.
-     *
-     * This method checks that required fields such as `request_method`, `endpoint`, and `response_code` are present.
-     *
-     * @param array $data The log data to be validated.
-     * @return array An array of error messages if validation fails, or an empty array if validation is successful.
-     */
-    public function validateLogData(array $data): array
+    public function sort(string $ordem)
     {
+        $this->sort = " ORDER BY {$ordem}";
+        return $this;
+    }
 
-        $errors = [];
 
-        if (empty($data['request_method'])) {
-            $errors[] = 'request_method is required';
+    public function limit(string $limite)
+    {
+        $this->limit = " LIMIT {$limite}";
+        return $this;
+    }
+
+
+    public function offset(string $offset)
+    {
+        $this->offset = " OFFSET {$offset}";
+        return $this;
+    }
+
+
+    public function search(?string $terms = null, ?string $params = null, string $columns = '*')
+    {
+        if ($terms) {
+            $this->query = "SELECT {$columns} FROM " . $this->table . " WHERE {$terms}";
+            parse_str($params, $this->params);
+            return $this;
         }
 
-        if (empty($data['endpoint'])) {
-            $errors[] = 'endpoint is required';
+        $this->query = "SELECT {$columns} FROM " . $this->table;
+        return $this;
+    }
+
+    public function result(bool $all = false)
+    {
+        try {
+            $stmt = DbConection::getInstance()->prepare($this->query . $this->sort . $this->limit . $this->offset);
+            $stmt->execute($this->params);
+
+            if (!$stmt->rowCount()) {
+                return null;
+            }
+
+            if ($all) {
+                return $stmt->fetchAll(\PDO::FETCH_CLASS, static::class);
+            }
+
+            return $stmt->fetchObject(static::class);
+
+        } catch (\PDOException $ex) {
+            return 'Error => code: '.$ex->getCode().' | description: '.$ex->getmessage();
         }
-
-        if (empty($data['response_code'])) {
-            $errors[] = 'response_code is required';
-        }
-
-        return $errors;
-
     }
 
     /**
@@ -97,17 +130,19 @@ abstract class LogDbModel
             $columns = implode(',', array_keys($data));
             $values = ':' . implode(',:', array_keys($data));
 
-            $query = "INSERT INTO " . $this->tabela . "({$columns}) VALUES ({$values})";
+            $this->query = "INSERT INTO " . $this->table . " ({$columns}) VALUES ({$values})";
 
-            $stmt = DbConection::getInstance()->prepare($query);
+            $stmt = DbConection::getInstance()->prepare($this->query);
             $stmt->execute($this->dataFilter($data));
 
             return DbConection::getInstance()->lastInsertId();
         } catch (\PDOException $ex) {
-            $this->erro = $ex->getCode();
-            return null;
+            return 'Error => code: '.$ex->getCode().' | description: '.$ex->getmessage();
         }
     }
+
+
+    // ---------------------------------------------
 
     /**
      * Saves the log data by calling the `register` method.
@@ -121,4 +156,69 @@ abstract class LogDbModel
     {
         return $this->register($data);
     }
+
+    public function getLogRegister(string $days=null, string $finished=null, string $apiKey)
+    {
+        try {
+
+            if ($days == '7' || $days == '15' || $days == '30' || empty($days)) {
+
+                $daysSearch = empty($days) ? 4 : $days;
+
+                $date = new DateTime($finished);
+                $dayFinished = is_null($finished) ? $date->format('Y-m-d H:i:s') : $finished;
+
+                $date->setTime(0, 0);
+                $date->modify("-".$daysSearch." days");
+
+                $formattedDate = $date->format('Y-m-d H:i:s');
+                $formattedFinishDay = (new DateTime($dayFinished))->setTime(date('H'), date('i'), date('s'))->format('Y-m-d H:i:s');
+
+                $term = "register_date BETWEEN '{$formattedDate}' AND '{$formattedFinishDay}'";
+
+                $result = $this->search($term)->sort("register_date ASC")->result(true);
+                $count = $this->search($term, null, 'COUNT(id) as Qty')->result();
+
+                return [
+                    'responseCode'=> 200,
+                    'data' =>[
+                        'query-days-search' => $daysSearch == 4 ? '5' : $days,
+                        'query-day-start' => $formattedDate,
+                        'query-day-end' => $formattedFinishDay,
+                        'count' => $count->Qty,
+                        'registers' => $result,
+                    ]];
+            }
+
+            return [
+                'responseCode'=> 404,
+                'data' => [
+                    'error' => 'FAILED TO FETCH RECORDS'
+                ]
+            ];
+
+        } catch (\PDOException $ex) {
+
+            $error = 'Error => code: '.$ex->getCode().' | description: '.$ex->getmessage();
+
+            return [
+                'responseCode'=> 500,
+                'data' => [
+                    'error' => $error
+                ]
+            ];
+
+        }
+
+    }
+
+    public function checkApiKey(string $key):bool
+    {
+        $userDb = new UserModel();
+        $findApiKey =$userDb->search("api_key = ".$key)->result(true);
+
+        return (bool)$findApiKey;
+    }
+
+
 }

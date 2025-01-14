@@ -2,10 +2,8 @@
 
 namespace system\model;
 
-
-use system\core\ExternalApiConection;
-use system\core\SwApiModel;
 use system\core\Helpers;
+use system\core\SwApiModel;
 
 /**
  * Class SwApiPy4E
@@ -73,43 +71,67 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
         $endpoint = $_SERVER['REQUEST_URI'];
         $responseCode = http_response_code();
 
-        $allCharacters = $this->getAllByField($this->peopleEndpoint, 'name');
-
         $data = [];
 
-        if(isset($rawDataParameter)){
-            $film = parent::fetchData($this->filmsEndpoint.$rawDataParameter.'/');
-            $characterIds = parent::getIdFromUrl($film['characters']);
-            $characterNames = array_map(fn($id) => $allCharacters[$id] ?? 'Unknown', $characterIds);
+        // If the rawDataParameter is provided
+        if (isset($rawDataParameter)) {
+            // Try to fetch the film data
+            $film = parent::fetchData($this->filmsEndpoint . $rawDataParameter . '/');
 
+            // Check if the film data is valid and contains the necessary keys
+            if (empty($film) || !isset($film['title'])) {
+                // If the data is not valid, return an error or fallback message
+                return [
+                    'method' => $method,
+                    'endpoint' => $endpoint,
+                    'responseCode' => 404, // Set an appropriate response code
+                    'data' => ['error' => 'Film not found or invalid data.']
+                ];
+            }
+
+            // Get the character IDs, with key check
+            $characterIds = isset($film['characters']) ? parent::getIdFromUrl($film['characters']) : [];
+
+            // Add the film data to the array
             $data[] = [
-                'name' => $film['title'],
-                'episode' => $film['episode_id'],
-                'synopsis' => $film['opening_crawl'],
-                'release_date' => $film['release_date'],
-                'director' => $film['director'],
-                'producers' => $film['producer'],
-                'characters' => $characterNames,
-                'film_age' => parent::calculateFilmAge($film['release_date']),
-                'moviePoster' => parent::getPosterByMovieName($film['title'])
+                'name' => $film['title'] ?? 'Unknown title',
+                'episode' => $film['episode_id'] ?? 'Episode ID not available',
+                'synopsis' => $film['opening_crawl'] ?? 'Synopsis not available',
+                'release_date' => $film['release_date'] ?? 'Release date not available',
+                'director' => $film['director'] ?? 'Unknown director',
+                'producers' => $film['producer'] ?? 'Unknown producers',
+                'characters' => $characterIds,
+                'film_age' => isset($film['release_date']) ? parent::calculateFilmAge($film['release_date']) : 'Unknown film age',
+                'moviePoster' => 'Poster not available',
+                'movieTrailer' => $this->shearchedYoutubeMovietrailerUrl($film['title'] ?? 'Unknown title', 'Star Wars'),
             ];
 
         } else {
-
+            // Otherwise, fetch all films
             $rawData = parent::fetchData($this->filmsEndpoint);
 
-            $data = array_map(function($film) {
+            // Check if the films data was fetched successfully
+            if (empty($rawData) || !isset($rawData['results'])) {
                 return [
-                    'name' => $film['title'],
-                    'release_date' => $film['release_date'],
-                    'id' => parent::getIdFromUrl($film['url']),
-                    'moviePoster' => parent::getPosterByMovieName($film['title'])
+                    'method' => $method,
+                    'endpoint' => $endpoint,
+                    'responseCode' => 404, // Set an appropriate response code
+                    'data' => ['error' => 'No films found.']
+                ];
+            }
+
+            // Map the raw data to a simpler structure
+            $data = array_map(function ($film) {
+                return [
+                    'name' => $film['title'] ?? 'Unknown title',
+                    'release_date' => $film['release_date'] ?? 'Release date not available',
+                    'id' => isset($film['url']) ? parent::getIdFromUrl($film['url']) : 'ID not available',
+                    'moviePoster' => 'Poster not available'
                 ];
             }, $rawData['results']);
-
-
         }
 
+        // Return the formatted data
         return [
             'method' => $method,
             'endpoint' => $endpoint,
@@ -117,6 +139,8 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
             'data' => $data,
         ];
     }
+
+
 
     /**
      * Retrieves the detailed information of a film by its unique identifier.
@@ -129,6 +153,51 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
         return $this->standardizeFilmsData($id);
     }
 
+
+    public function getCharacterNamesByIds($ids): array
+    {
+        $characterIds = (array) $ids;
+        $allCharacters = $this->getAllByField($this->peopleEndpoint, 'name');
+
+        return array_map(fn($id) => $allCharacters[$id] ?? 'Unknown', $characterIds);
+    }
+
+    public function getPosterByMovieName(string $movieName): array
+    {
+        $method = 'GET';
+        $endpoint = URL_API_DEVELOPMENT.'movie/'.$movieName;
+        $responseCode = 200;
+
+        try {
+            $moviePosterLink = $this->getLinkPosterByMovieName($movieName);
+
+            if ($moviePosterLink === 'Poster not available'){
+                $responseCode = 404;
+            }
+
+            return [
+                'method' => $method,
+                'endpoint' => $endpoint,
+                'responseCode' => $responseCode,
+                'data' => $this->getLinkPosterByMovieName($movieName),
+            ];
+
+        } catch (\Exception $e) {
+
+            return [
+                'method' => $method,
+                'endpoint' => $endpoint,
+                'responseCode' => 500,
+                'error' => $e->getMessage(),
+            ];
+
+        }
+
+
+
+    }
+
+
     /**
      * Retrieves all data from the given endpoint based on the specified field.
      * The method queries the specified endpoint and filters results by the provided field.
@@ -140,6 +209,14 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
     public function getAllByField(string $endPoint,string $searchedField): array
     {
         return $this->fetchAllFromEndpoint($endPoint, $searchedField);
+    }
+
+    public function shearchedYoutubeMovietrailerUrl(string $movieName, string $chanelName='')
+    {
+        $params = 'Star+Wars%3A'.urlencode($movieName).'+trailer+channel%3'.urlencode($chanelName);
+
+        return parent::getYoutubeLinkFound($params, true);
+
     }
 
 }
