@@ -35,12 +35,16 @@ function defineRoutes($uri, $requestMethod)
         if ($uri === $baseSiteUri && $requestMethod === 'GET') {
             http_response_code(200);
             $siteController->index();
+
         } elseif (preg_match("#^{$baseSiteUri}movie/([^/]+)$#", $uri, $matches) && $requestMethod === 'GET') {
             http_response_code(200);
-            $siteController->movieDetailPage();
+            $movieName = $matches[1];
+            $siteController->movieDetailPage($movieName);
+
         } elseif ($uri === "{$baseSiteUri}error-page" && $requestMethod === 'GET') {
             http_response_code(404);
             $siteController->errorPage();
+
         } else {
             http_response_code(404);
             Helpers::redirectUrl('error-page');
@@ -61,7 +65,7 @@ function defineRoutes($uri, $requestMethod)
                 "endpoints" => [
                     "films" => "{$baseApiUri}films",
                     "films-detail" => "{$baseApiUri}films/details/{id}",
-                    "movie-name" => "{$baseApiUri}movie/{movieName}",
+                    "movie-poster" => "{$baseApiUri}movie/{movieName}",
                     "characters-names" => "{$baseApiUri}characters-names (POST)",
                     "log-data" => "{$baseApiUri}log-data/query (API KEY REQUIRED)"
                 ],

@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     showSpinner(document.body);
 
-
     loadContent(`${baseUrl}front-end/view/header.html`, 'header-content');
     loadContent(content, idContent);
     loadContent(`${baseUrl}front-end/view/footer.html`, 'footer-content');

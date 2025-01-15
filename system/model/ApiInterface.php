@@ -1,6 +1,6 @@
 <?php
 
-namespace system\core;
+namespace system\model;
 
 /**
  * Interface ApiInterface

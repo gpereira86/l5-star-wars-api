@@ -2,7 +2,6 @@
 
 namespace system\model;
 
-use system\core\ApiInterface;
 use system\core\SwApiModel;
 
 /**
@@ -236,6 +235,6 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
         $params = 'Star+Wars%3A' . urlencode($movieName) . '%2F&search_query=trailer';
         $url = "https://www.youtube.com/results?search_query={$params}";
 
-        return $url;
+        return parent::getYoutubeLinkFound($url, true);
     }
 }

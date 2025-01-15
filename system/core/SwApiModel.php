@@ -18,7 +18,7 @@ use system\core\ExternalApiConection;
  * - Performing calculations based on retrieved data, such as movie age.
  * - Processing URLs to extract IDs and mapping specific fields to movie data.
  */
-class SwApiModel
+abstract class SwApiModel
 {
     protected string $baseUrl;
     protected string $posterUrl = URL_API_MOVIE_POSTER;
