@@ -5,27 +5,25 @@ namespace system\model;
 use system\core\LogDbModel;
 
 /**
- * Represents a model for logging operations, extending the LogDbModel class.
- * The model is initialized with a specific database table for logging data.
+ * Class UserModel
  *
- * This class is used to handle logging operations related to the API,
- * storing logs in the 'api_logs' table in the database.
+ * Represents the user model which interacts with the 'users' table in the database.
+ * This class extends the LogDbModel to perform database operations with logging functionality.
  *
  * @package system\model
- * @extends LogDbModel
  */
 class UserModel extends LogDbModel
 {
     /**
-     * Initializes the class and calls the parent constructor with the name of the log table in your database.
+     * UserModel constructor.
      *
-     * This constructor ensures that the `LogDbModel` class is properly initialized with the table
-     * 'api_logs' where log data will be stored.
-     *
-     * @return void
+     * Initializes the UserModel by calling the parent constructor and specifying the 'users' table
+     * for database interactions. The constructor of the parent LogDbModel class will handle the
+     * database connection and any related operations for the 'users' table.
      */
     public function __construct()
     {
+        // Call the parent constructor to initialize the model with the 'users' table
         parent::__construct('users');
     }
 }

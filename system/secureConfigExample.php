@@ -7,7 +7,6 @@
  *
  * - `FILM_IMAGE_API_KEY`: API key to access the movie poster service from "https://api.themoviedb.org".
  *   This key is required for the application to retrieve movie posters.
- * - `LOCAL_API_KEY`: Placeholder for a local API key, used for testing or development purposes.
  *
  * @note **Security Recommendation**:
  *       - Avoid hardcoding sensitive values directly in the code, especially in production environments.

@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     let baseUrl = './../';
     let content = baseUrl + 'front-end/view/content-movie-detail.html';
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
 
-
     let apiUrl = `${globalApiUrl}films/details/`;
 
     showSpinner(document.body);
@@ -15,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
     loadContent(`${baseUrl}front-end/view/header.html`, 'header-content');
     loadContent(content, idContent);
     loadContent(`${baseUrl}front-end/view/footer.html`, 'footer-content');
-
 
     getApiData(apiUrl, movieId);
 

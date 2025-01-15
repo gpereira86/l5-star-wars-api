@@ -3,16 +3,24 @@
 namespace system\core;
 
 /**
- * Helper class providing various utility methods for the application.
+ * Helper class providing various utility methods for common tasks within the application.
  *
- * This class includes methods for working with URLs, redirecting, summarizing text, and creating slugs. These methods are commonly used across the application to simplify common tasks.
+ * This class includes methods that are frequently used across the application, such as:
+ * - Checking if the environment is local or production.
+ * - Constructing a full URL based on the current environment.
+ * - Redirecting to specific URLs.
+ * - Sending JSON responses with status codes.
+ *
+ * These methods are designed to simplify common tasks and improve code readability and maintainability.
  */
 class Helpers
 {
     /**
-     * Returns true if the environment is localhost, false otherwise.
+     * Checks if the environment is local (localhost).
      *
-     * This method checks the `SERVER_NAME` to determine if the application is running on localhost.
+     * This method inspects the `SERVER_NAME` to determine if the application is running on a local server
+     * (e.g., localhost) or on a production environment. It returns true if the environment is localhost,
+     * and false otherwise.
      *
      * @return bool True if the environment is localhost, false otherwise.
      */
@@ -20,103 +28,78 @@ class Helpers
     {
         $server = filter_input(INPUT_SERVER, 'SERVER_NAME');
 
-        if ($server == 'localhost') {
-            return true;
-        }
-        return false;
+        return $server == 'localhost';
     }
 
     /**
      * Constructs a full URL based on the current environment (development or production).
      *
-     * This method uses the `SERVER_NAME` to determine whether the environment is local or production, and then appends the provided URL to the base URL for the appropriate environment.
+     * This method checks the value of `SERVER_NAME` to determine whether the environment is local (localhost)
+     * or production. It then appends the provided URL to the base URL of the appropriate environment.
+     * If no URL is provided, it defaults to the base URL of the environment.
      *
-     * @param string|null $url The URL to append to the environment base URL.
-     * @return string The full URL.
+     * @param string|null $url The relative URL to append to the base URL.
+     * @return string The complete URL for the current environment.
      */
     public static function url(string $url = null): string
     {
         $server = filter_input(INPUT_SERVER, 'SERVER_NAME');
         $environmentInUse = ($server == 'localhost' ? DEVELOPMENT_URL : PRODUCTION_URL);
 
+        // If the URL starts with a '/', append directly to the base URL
         if (strpos($url, '/') === 0) {
             return $environmentInUse . $url;
         }
 
+        // Otherwise, append a '/' before the provided URL
         return $environmentInUse . '/' . $url;
     }
 
     /**
-     * Simplified URL redirection using just the slug.
+     * Redirects the user to a new URL based on the provided slug.
      *
-     * This method redirects the user to a new URL based on the provided slug. If no slug is provided, it redirects to the home page.
+     * This method performs a URL redirection using the provided slug (or URL). If no slug is provided,
+     * it defaults to redirecting the user to the home page. The redirection is performed with a 302 HTTP status code.
      *
-     * @param string|null $url The slug or URL to redirect to.
+     * @param string|null $url The slug (or URL) to redirect to. If not provided, the user is redirected to the home page.
      * @return void
      */
     public static function redirectUrl(string $url = null): void
     {
+        // Send a 302 Found status header for redirection
         header('HTTP/1.1 302 found');
 
+        // Determine the URL to redirect to (defaulting to home if no slug is provided)
         $local = ($url ? self::url($url) : self::url());
 
+        // Perform the actual redirection
         header("location: {$local}");
         exit();
     }
 
     /**
-     * Summarizes the provided text to a given character limit.
+     * Sends a JSON response with a given status code.
      *
-     * This method trims and strips any HTML tags from the provided text, and then shortens the text to the specified character limit. If the text exceeds the limit, it appends a continuation string (e.g., '...').
+     * This method sends a JSON response back to the client. It allows specifying a custom HTTP status code
+     * for the response. By default, the status code is 200 (OK). The response is sent with the appropriate
+     * `Content-Type` header for JSON responses.
      *
-     * @param string $text The text to summarize.
-     * @param int $limit The character limit for the summarized text.
-     * @param string $continue The string to append if the text is shortened (default is '...').
-     * @return string The summarized text.
+     * @param array $data The data to send in the JSON response.
+     * @param int $statusCode The HTTP status code to use for the response. Defaults to 200 (OK).
+     * @return void
      */
-    public static function summarizeText(string $text, int $limit, string $continue = '...'): string
+    public static function sendResponse(array $data, int $statusCode = 200): void
     {
-        $cleanText = trim(strip_tags($text));
-
-        if (mb_strlen($cleanText) <= $limit) {
-            return $cleanText;
-        }
-
-        $summarizeText = mb_substr($cleanText, 0, mb_strrpos(mb_substr($cleanText, 0, $limit), ' '));
-
-        return $summarizeText . $continue;
-    }
-
-    /**
-     * Converts a string into a URL-friendly slug.
-     *
-     * This method converts special characters, accents, and spaces into a URL-friendly format, where words are separated by hyphens.
-     *
-     * @param string $string The string to convert into a slug.
-     * @return string The generated slug.
-     */
-    public static function slug(string $string): string
-    {
-        $map['a'] = "ÁáãÃÉéÍíÓóÚúÀàÈèÌìÒòÙùÂâÊêÎîÔôÛûÄäËëÏïÖöÜüÇçÑñÝý!@#$%&!*_-+=:;,.?/|'~^°¨ªº´";
-        $map['b'] = 'AaaAEeIiOoUuAaEeIiOoUuAaEeIiOoUuAaEeIiOoUuCcNnYy___________________________';
-
-        $slug = strtr(utf8_decode($string), utf8_decode($map['a']), $map['b']);
-        $slug = strip_tags(trim($slug));
-        $slug = str_replace(' ', '-', $slug);
-        $slug = str_replace(['-----', '----', '--', '-'], '-', $slug);
-
-        return strtolower(utf8_decode($slug));
-    }
-
-    public static function sendResponse(array $data, int $statusCode = 200)
-    {
+        // Set the content type to JSON
         header('Content-Type: application/json');
+
+        // Set the HTTP status code for the response
         http_response_code($statusCode);
+
+        // Encode the data to JSON and send it in the response
         echo json_encode($data);
-//        exit;
+
+        // Optionally, you could use exit() to terminate further script execution, but it's commented out here.
+        // exit;
     }
-
-
-
-
 }

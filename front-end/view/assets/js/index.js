@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
     loadContent(`${baseUrl}front-end/view/header.html`, 'header-content');
     loadContent(content, idContent);
     loadContent(`${baseUrl}front-end/view/footer.html`, 'footer-content');
-    //loadContent(`${baseUrl}front-end/view/modal.html`, 'modal-content');
+    // loadContent(`${baseUrl}front-end/view/modal.html`, 'modal-content');
 
     getApiData(apiUrl);
 
-    const myModal = document.getElementById('filmDetailModal');
+    // const myModal = document.getElementById('filmDetailModal');
 
     console.info("May the Force be with you!");
 

@@ -3,17 +3,18 @@
 namespace system\controller;
 
 /**
- * SiteController handles the rendering of pages for the site.
+ * SiteController is responsible for handling the rendering of different pages for the site.
  *
- * It is responsible for rendering the homepage, movie detail page,
- * and error page by loading their corresponding HTML files.
+ * This controller manages the logic for rendering pages like the homepage, movie detail page, and error page.
+ * It uses the `renderHTML` method to load the corresponding HTML files from the front-end views.
  */
 class SiteController
 {
     /**
      * Renders the homepage of the site.
      *
-     * This method loads the index.html file from the front-end views.
+     * This method loads the `index.html` file from the front-end views and outputs it to the browser.
+     * It does not require any data to be passed and simply renders the static homepage.
      */
     public function index()
     {
@@ -23,21 +24,25 @@ class SiteController
     /**
      * Renders the movie details page for a specific movie.
      *
-     * This method loads the movie-details.html file from the front-end views.
+     * This method loads the `movie-details.html` file from the front-end views, and it may include
+     * specific movie data if provided. The movie details are expected to be passed as part of the
+     * data array.
      *
-     * @param string $movieName The name of the movie for which details are to be displayed.
+     * @param string $movieName The name of the movie whose details are to be displayed.
+     * @param array $data Optional data to be passed to the view, such as movie information.
      */
-    public function movieDetailPage(string $movieName=null)
+    public function movieDetailPage($movieName, $data = [])
     {
-//        $data = ['movieName' => $movieName];  // Pass movieName to view
-//        $this->renderHTML('./front-end/view/movie-details.html', $data);
-        $this->renderHTML('./front-end/view/movie-details.html');
+        // Pass the movie name and additional data to the view if necessary
+        $data['movieName'] = $movieName;
+        $this->renderHTML('./front-end/view/movie-details.html', $data);
     }
 
     /**
      * Renders the error page.
      *
-     * This method loads the error.html file from the front-end views.
+     * This method loads the `error.html` file from the front-end views and displays an error message.
+     * It can be used for handling various types of errors that occur on the site.
      */
     public function errorPage()
     {
@@ -45,33 +50,44 @@ class SiteController
     }
 
     /**
-     * Renders an HTML file and outputs its content.
+     * Renders an HTML file and outputs its content to the browser.
      *
-     * This method loads the specified HTML file, optionally extracts data
-     * passed as an associative array, and then outputs the rendered content.
-     * If the HTML file doesn't exist, it will throw an exception.
+     * This method is responsible for loading the specified HTML file, extracting any data passed
+     * as an associative array, and rendering the content. If the HTML file does not exist, it throws
+     * an exception with an error message.
+     *
+     * It utilizes output buffering to capture the content of the HTML file and pass any variables
+     * extracted from the data array.
      *
      * @param string $file The path to the HTML file to be rendered.
-     * @param array $data Optional data to be passed to the HTML file.
+     * @param array $data Optional associative array of data to be passed to the HTML file.
+     * @throws \Exception If the specified HTML file is not found.
      */
     public function renderHTML($file, $data = [])
     {
         try {
+            // Check if the HTML file exists
             if (!file_exists($file)) {
-                throw new \Exception("HTML file not found!");
+                throw new \Exception("HTML file not found: " . $file);
             }
 
-            // Explicitly pass data to avoid overwriting variables
-            ob_start();  // Start output buffering
-            extract($data);  // Extracts data array into variables
+            // Start output buffering to capture HTML content
+            ob_start();
 
-            include($file);  // Include the HTML file
-            $content = ob_get_clean();  // Get the content of the buffer and clean it
+            // Extract data array as individual variables
+            extract($data);
 
-            echo $content;  // Output the rendered content
+            // Include the HTML file and capture its content
+            include($file);
+
+            // Get the content from the output buffer and clean it
+            $content = ob_get_clean();
+
+            // Output the rendered content to the browser
+            echo $content;
         } catch (\Exception $e) {
-            // Handle error with a custom message or logging
-            echo "Error: " . $e->getMessage();  // You could also log this message
+            // Handle exceptions by displaying an error message (consider logging this error)
+            echo "Error: " . $e->getMessage();
         }
     }
 }

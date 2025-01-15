@@ -7,6 +7,7 @@ async function getApiData(url, id=null) {
     if(movieId !== ''){
 
         if (filmsData && filmsData.data[0]) {
+
             const moviePosterUrl = await fetchApi(`${globalApiUrl}movie/${encodeURIComponent(filmsData.data[0]['name'])}`);
 
             if(filmsData.responseCode !== 404) {
@@ -54,7 +55,6 @@ async function getApiData(url, id=null) {
 async function getCharacterApiData(url, ids) {
     const apiUrl = url;
     const characterIds = ids;
-    let endpoint = url.replace(window.location.origin, "")
 
     try {
         const response = await fetch(apiUrl, {
@@ -66,22 +66,10 @@ async function getCharacterApiData(url, ids) {
         });
 
         if (!response.ok) {
-            // fetchLogResponse(
-            //     globalLogRegisterUrl,
-            //     'POST',
-            //     endpoint,
-            //     response.status
-            // );
             throw new Error(`Error: ${response.status}`);
         }
 
         const data = await response.json();
-        // fetchLogResponse(
-        //     globalLogRegisterUrl,
-        //     'POST',
-        //     endpoint,
-        //     response.status
-        // );
 
         return data;
 

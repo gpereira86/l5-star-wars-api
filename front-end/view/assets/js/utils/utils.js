@@ -1,5 +1,3 @@
-
-
 function formatDateUS(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');

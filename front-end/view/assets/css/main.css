@@ -26,12 +26,7 @@ header{
 
 .main-page-subtitle {
     font-family: 'Starjhol', sans-serif;
-    /*color: #FFE81F;*/
 }
-
-/*#main-content {*/
-/*    margin-bottom: 0vh;*/
-/*}*/
 
 footer{
     font-family: 'stjelogo-Stjldbl1', sans-serif;
@@ -41,7 +36,7 @@ footer{
 }
 
 .img-card-max-size{
-    max-height: 250px; /* Limita a altura da imagem */
+    max-height: 250px;
     background-color: #151515;
     padding-top: 10px;
     object-fit: contain;
@@ -70,7 +65,6 @@ footer{
     background-color: #FFE81F;
     border-color: #FFE81F;
 }
-
 
 @media (max-width: 840px), (max-height: 640px) {
     header{

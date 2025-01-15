@@ -2,7 +2,7 @@
 
 namespace system\model;
 
-use system\core\Helpers;
+use system\core\ApiInterface;
 use system\core\SwApiModel;
 
 /**
@@ -12,43 +12,48 @@ use system\core\SwApiModel;
  * It extends the `SwApiModel` class to leverage core API functionalities and implements the `ApiInterface`
  * to ensure adherence to a defined API interaction contract.
  *
- * The class provides methods to:
- * - Retrieve and standardize film data with metadata such as movie posters and film age.
- * - Fetch detailed information about specific films or a list of all available films.
+ * The class offers methods to interact with film data, including fetching information about films,
+ * characters, and related metadata such as movie posters and trailers.
  *
- * Key features:
- * - Centralized handling of API requests through endpoint-specific methods.
- * - Transformation of raw API data into structured, application-ready formats.
- * - Additional functionality for retrieving movie posters and calculating film ages.
+ * Key Features:
+ * - Retrieve and standardize film data, including metadata such as release date, episode, and characters.
+ * - Fetch detailed information about a specific film by its ID.
+ * - Retrieve movie posters and calculate the age of the film based on its release date.
+ * - Query specific fields from the Star Wars API and return structured data.
  *
- * Example usage:
+ * Example Usage:
  * - Retrieve all films: `getFilmsData()`
  * - Get details of a specific film by ID: `getFilmDetailById($id)`
- * - Query specific fields from any endpoint: `getAllByField($endpoint, $field)`
+ * - Fetch movie posters by movie name: `getPosterByMovieName($movieName)`
+ * - Retrieve character names by their IDs: `getCharacterNamesByIds($ids)`
  */
 class SwApiPy4E extends SwApiModel implements ApiInterface
 {
-
     protected string $baseUrl;
-    protected string $filmsEndpoint = "films/";
-    protected string $peopleEndpoint = "people/";
+    protected string $filmsEndpoint = "films/"; // Endpoint for film-related data.
+    protected string $peopleEndpoint = "people/"; // Endpoint for character-related data.
 
     /**
-     * Constructor method to initialize the base URL and call the parent constructor.
-     * It is necessary to provide the API base URL. Example: https://swapi.py4e.com/api/
+     * SwApiPy4E constructor.
+     *
+     * Initializes the class by setting the base URL for the Star Wars API (SWAPI py4e).
+     * The constructor then calls the parent constructor to set up the base URL.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->baseUrl = 'https://swapi.py4e.com/api/';
-        parent::__construct($this->baseUrl);
+        $this->baseUrl = 'https://swapi.py4e.com/api/'; // Star Wars API base URL
+        parent::__construct($this->baseUrl); // Initialize the parent class with the base URL
     }
 
     /**
-     * Retrieves and standardizes film data from the API.
+     * Retrieves and standardizes film data from the Star Wars API.
      *
-     * @return array The array containing standardized film data.
+     * This method calls the `standardizeFilmsData()` method to process and return film data
+     * from the API in a standardized format.
+     *
+     * @return array An array containing the standardized film data.
      */
     public function getFilmsData(): array
     {
@@ -56,14 +61,14 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
     }
 
     /**
-     * Processes and standardizes film data based on provided raw data or retrieves all films data
-     * if no specific parameter is supplied. The method fetches film details, character data, calculates
-     * film age, and includes additional metadata such as movie posters.
+     * Processes and standardizes film data from the API.
      *
-     * @param string|null $rawDataParameter An optional parameter specifying the raw data identifier for a specific film.
-     * @return array An associative array containing metadata such as the HTTP method, the request endpoint,
-     * HTTP response code, and the processed film data. The film data may include title, release date,
-     * episode details, directors, producers, characters, film age, and associated movie posters.
+     * This method fetches film data, character data, calculates film age, and includes additional metadata
+     * such as movie posters. It processes raw data from the API into a more structured format.
+     *
+     * @param string|null $rawDataParameter Optional parameter specifying a film ID to fetch specific data.
+     * @return array An associative array containing standardized film data with metadata such as title,
+     * release date, episode details, directors, producers, characters, film age, and movie posters.
      */
     public function standardizeFilmsData(string $rawDataParameter = null): array
     {
@@ -73,26 +78,22 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
 
         $data = [];
 
-        // If the rawDataParameter is provided
+        // If rawDataParameter is provided, fetch data for a specific film.
         if (isset($rawDataParameter)) {
-            // Try to fetch the film data
             $film = parent::fetchData($this->filmsEndpoint . $rawDataParameter . '/');
 
-            // Check if the film data is valid and contains the necessary keys
             if (empty($film) || !isset($film['title'])) {
-                // If the data is not valid, return an error or fallback message
                 return [
                     'method' => $method,
                     'endpoint' => $endpoint,
-                    'responseCode' => 404, // Set an appropriate response code
+                    'responseCode' => 404, // Return 404 if film not found
                     'data' => ['error' => 'Film not found or invalid data.']
                 ];
             }
 
-            // Get the character IDs, with key check
+            // Process the film data and fetch related character IDs.
             $characterIds = isset($film['characters']) ? parent::getIdFromUrl($film['characters']) : [];
 
-            // Add the film data to the array
             $data[] = [
                 'name' => $film['title'] ?? 'Unknown title',
                 'episode' => $film['episode_id'] ?? 'Episode ID not available',
@@ -103,24 +104,22 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
                 'characters' => $characterIds,
                 'film_age' => isset($film['release_date']) ? parent::calculateFilmAge($film['release_date']) : 'Unknown film age',
                 'moviePoster' => 'Poster not available',
-                'movieTrailer' => $this->shearchedYoutubeMovietrailerUrl($film['title'] ?? 'Unknown title', 'Star Wars'),
+                'movieTrailer' => $this->searchedYoutubeMovieTrailerUrl($film['title'] ?? 'Unknown title', 'Star Wars'),
             ];
-
         } else {
-            // Otherwise, fetch all films
+            // If no parameter is provided, fetch all films.
             $rawData = parent::fetchData($this->filmsEndpoint);
 
-            // Check if the films data was fetched successfully
             if (empty($rawData) || !isset($rawData['results'])) {
                 return [
                     'method' => $method,
                     'endpoint' => $endpoint,
-                    'responseCode' => 404, // Set an appropriate response code
+                    'responseCode' => 404, // Return 404 if no films found
                     'data' => ['error' => 'No films found.']
                 ];
             }
 
-            // Map the raw data to a simpler structure
+            // Simplify the data structure for all films.
             $data = array_map(function ($film) {
                 return [
                     'name' => $film['title'] ?? 'Unknown title',
@@ -131,7 +130,6 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
             }, $rawData['results']);
         }
 
-        // Return the formatted data
         return [
             'method' => $method,
             'endpoint' => $endpoint,
@@ -140,10 +138,11 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
         ];
     }
 
-
-
     /**
-     * Retrieves the detailed information of a film by its unique identifier.
+     * Retrieves detailed information about a film by its unique ID.
+     *
+     * This method acts as a wrapper around `standardizeFilmsData()` to fetch data
+     * for a specific film by its ID.
      *
      * @param string $id The unique identifier of the film.
      * @return array An array containing the standardized film details.
@@ -153,7 +152,15 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
         return $this->standardizeFilmsData($id);
     }
 
-
+    /**
+     * Retrieves the names of characters based on their unique IDs.
+     *
+     * This method maps character IDs to their corresponding names by querying
+     * the 'people' endpoint.
+     *
+     * @param array|string $ids A single ID or an array of IDs to fetch character names.
+     * @return array An array of character names.
+     */
     public function getCharacterNamesByIds($ids): array
     {
         $characterIds = (array) $ids;
@@ -162,16 +169,25 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
         return array_map(fn($id) => $allCharacters[$id] ?? 'Unknown', $characterIds);
     }
 
+    /**
+     * Retrieves the movie poster by the movie name.
+     *
+     * This method returns the movie poster URL by querying an external service.
+     * It returns a fallback message if the poster is unavailable.
+     *
+     * @param string $movieName The name of the movie for which to fetch the poster.
+     * @return array An array containing the HTTP method, endpoint, response code, and movie poster data.
+     */
     public function getPosterByMovieName(string $movieName): array
     {
         $method = 'GET';
-        $endpoint = URL_API_DEVELOPMENT.'movie/'.$movieName;
+        $endpoint = $_SERVER['REQUEST_URI'];
         $responseCode = 200;
 
         try {
             $moviePosterLink = $this->getLinkPosterByMovieName($movieName);
 
-            if ($moviePosterLink === 'Poster not available'){
+            if ($moviePosterLink === 'Poster not available') {
                 $responseCode = 404;
             }
 
@@ -179,44 +195,47 @@ class SwApiPy4E extends SwApiModel implements ApiInterface
                 'method' => $method,
                 'endpoint' => $endpoint,
                 'responseCode' => $responseCode,
-                'data' => $this->getLinkPosterByMovieName($movieName),
+                'data' => $moviePosterLink,
             ];
-
         } catch (\Exception $e) {
-
             return [
                 'method' => $method,
                 'endpoint' => $endpoint,
                 'responseCode' => 500,
                 'error' => $e->getMessage(),
             ];
-
         }
-
-
-
     }
 
-
     /**
-     * Retrieves all data from the given endpoint based on the specified field.
-     * The method queries the specified endpoint and filters results by the provided field.
+     * Retrieves all data from a specified endpoint and filters results by a specific field.
+     *
+     * This method queries the API endpoint and returns data based on the field provided.
      *
      * @param string $endPoint The API endpoint to fetch data from.
-     * @param string $searchedField The field used to filter the data.
+     * @param string $searchedField The field to filter the data by.
      * @return array An array containing the filtered data.
      */
-    public function getAllByField(string $endPoint,string $searchedField): array
+    public function getAllByField(string $endPoint, string $searchedField): array
     {
         return $this->fetchAllFromEndpoint($endPoint, $searchedField);
     }
 
-    public function shearchedYoutubeMovietrailerUrl(string $movieName, string $chanelName='')
+    /**
+     * Retrieves the YouTube trailer URL for a specific movie.
+     *
+     * This method constructs a search URL for YouTube using the movie name and channel name
+     * to find the trailer.
+     *
+     * @param string $movieName The name of the movie.
+     * @param string $chanelName The name of the YouTube channel.
+     * @return string The URL of the movie trailer.
+     */
+    public function searchedYoutubeMovieTrailerUrl(string $movieName, string $chanelName = ''): string
     {
-        $params = 'Star+Wars%3A'.urlencode($movieName).'+trailer+channel%3'.urlencode($chanelName);
+        $params = 'Star+Wars%3A' . urlencode($movieName) . '%2F&search_query=trailer';
+        $url = "https://www.youtube.com/results?search_query={$params}";
 
-        return parent::getYoutubeLinkFound($params, true);
-
+        return $url;
     }
-
 }

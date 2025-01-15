@@ -40,7 +40,6 @@ body {
     transition: opacity 1s ease-out, transform 2s ease-in-out; /* Movimento e esmaecimento juntos */
 }
 
-
 .explosion {
     position: absolute;
     margin-top: -50px;
@@ -52,8 +51,7 @@ body {
     display: none;
     z-index: 10;
     transition: opacity 1s ease-out;
-    opacity: 0; /* Inicialmente invisível */
-    display: none; /* Inicialmente oculta */
+    opacity: 0;
 }
 
 .pageError{
