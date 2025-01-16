@@ -33,7 +33,6 @@ class SiteController
      */
     public function movieDetailPage($movieName, $data = [])
     {
-        // Pass the movie name and additional data to the view if necessary
         $data['movieName'] = $movieName;
         $this->renderHTML('./front-end/view/movie-details.html', $data);
     }
@@ -66,27 +65,17 @@ class SiteController
     public function renderHTML($file, $data = [])
     {
         try {
-            // Check if the HTML file exists
             if (!file_exists($file)) {
                 throw new \Exception("HTML file not found: " . $file);
             }
 
-            // Start output buffering to capture HTML content
             ob_start();
-
-            // Extract data array as individual variables
             extract($data);
-
-            // Include the HTML file and capture its content
             include($file);
-
-            // Get the content from the output buffer and clean it
             $content = ob_get_clean();
-
-            // Output the rendered content to the browser
             echo $content;
+
         } catch (\Exception $e) {
-            // Handle exceptions by displaying an error message (consider logging this error)
             echo "Error: " . $e->getMessage();
         }
     }

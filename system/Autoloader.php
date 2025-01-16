@@ -18,21 +18,14 @@
  * @throws Exception If the class file is not found, an exception is thrown.
  */
 spl_autoload_register(function ($class) {
-    // Define the base directory for class files
     $baseDir = dirname(__DIR__) . '/';
 
-    // Convert the class name into a file path following PSR-4 standards (namespace to folder)
     $file = $baseDir . str_replace('\\', '/', $class) . '.php';
 
-    // Check if the file exists
     if (file_exists($file)) {
-        // Include the class file
         require_once $file;
     } else {
-        // Log the error if the class file is not found
         error_log("Error loading class {$class}: File {$file} not found.");
-
-        // Throw an exception if the class file is not found
         throw new Exception("Class file '{$class}' not found: {$file}");
     }
 });

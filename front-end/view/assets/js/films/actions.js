@@ -17,7 +17,7 @@ async function getApiData(url, id=null) {
                 filmsData.data[0].charactersnames = charactersNames['charactersnames'];
                 filmsData.data[0].moviePoster = moviePosterUrl.data;
 
-                // displayFilmDetailsInModal(filmsData.data[0]);
+                // displayFilmDetailsInModal(filmsData.data[0]); // Call to populate and display the modal (when activated)
                 displayFilmDetailsNewRoute(filmsData.data[0]);
             } else {
                 console.error('Failed to load the movie.');

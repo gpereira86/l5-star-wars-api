@@ -20,24 +20,21 @@ class ExternalApiConection
     {
         $ch = curl_init();
 
-        // Set cURL options
-        curl_setopt($ch, CURLOPT_URL, $url); // Set the request URL
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response as a string
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-        curl_setopt($ch, CURLOPT_FAILONERROR, true); // Fail on errors
-        curl_setopt($ch, CURLOPT_TIMEOUT, 20); // Set timeout to 20 seconds
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
 
-        $response = curl_exec($ch); // Execute the request
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get the HTTP response code
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // Check for cURL errors
         if (curl_errno($ch)) {
             return 'Request error. (Error: ' . curl_error($ch) . ')';
         }
 
-        curl_close($ch); // Close the cURL session
+        curl_close($ch);
 
-        // Return response if status code is 200 (OK), otherwise return false
         if ($httpCode == 200) {
             return $response;
         } else {

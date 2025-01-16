@@ -30,6 +30,8 @@ function displayFilmsOnPage(movies) {
                         </button>
                         
                         <!--
+                            ** Include and replace the onclick when the modal is activated **
+                            
                             data-bs-toggle="modal"
                             data-bs-target="#filmDetailModal"
                             onclick="fetchFilmDetails(${movie.id})">
@@ -43,6 +45,7 @@ function displayFilmsOnPage(movies) {
     });
 }
 
+/// ===> Function to populate the modal with the selected movie details for display.
 // function displayFilmDetailsInModal(movie) {
 //
 //     document.getElementById('contentModalLabel').textContent = movie.name;
@@ -105,4 +108,4 @@ function displayFilmDetailsNewRoute(movie) {
 
 window.displayFilmsOnPage = displayFilmsOnPage;
 window.displayFilmDetailsNewRoute = displayFilmDetailsNewRoute;
-// window.displayFilmDetailsInModal = displayFilmDetailsInModal;
+// window.displayFilmDetailsInModal = displayFilmDetailsInModal; // Globalize the modal function

@@ -18,18 +18,18 @@ use system\core\Helpers;
  */
 function defineRoutes($uri, $requestMethod)
 {
-    // Set the base URIs for the API and site based on the environment (development or production)
     if (Helpers::localhost()) {
         $baseApiUri = URL_DEVELOPMENT.'api/';
         $baseSiteUri = URL_DEVELOPMENT;
     } else {
-        // Use the production base URIs for all other environments
         $baseApiUri = URL_PRODUCTION.'api/';
         $baseSiteUri = URL_PRODUCTION;
     }
 
+    $pos = strpos($uri, 'api/');
+
     // ===> Handle Site Routes <===
-    if (strpos($uri, 'api/') === false) {
+    if (!$pos) {
         $siteController = new SiteController();
 
         if ($uri === $baseSiteUri && $requestMethod === 'GET') {
@@ -51,7 +51,7 @@ function defineRoutes($uri, $requestMethod)
         }
 
         // ===> Handle API Routes <===
-    } elseif (strpos($uri, 'api/')) {
+    } elseif ($pos) {
         $movieController = new ApiMoviesController();
         $logDataController = new dbRegisterController();
 
@@ -96,7 +96,6 @@ function defineRoutes($uri, $requestMethod)
             echo $response;
 
         } else {
-            // Respond with a 404 error for undefined API routes
             http_response_code(404);
             echo json_encode([
                 "error" => "Route not found",

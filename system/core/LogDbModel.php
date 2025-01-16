@@ -23,12 +23,12 @@ use system\model\UserModel;
  */
 abstract class LogDbModel
 {
-    protected $table;      // Name of the table where logs are stored.
-    protected $params;     // Parameters for query execution.
-    protected $sort;       // Sorting order for the query.
-    protected $limit;      // Limit on the number of records returned.
-    protected $offset;     // Offset for pagination.
-    protected $query;      // SQL query being built or executed.
+    protected $table;
+    protected $params;
+    protected $sort;
+    protected $limit;
+    protected $offset;
+    protected $query;
 
     /**
      * Constructor method for `LogDbModel` class.

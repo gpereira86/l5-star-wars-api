@@ -23,7 +23,6 @@ class UserModel extends LogDbModel
      */
     public function __construct()
     {
-        // Call the parent constructor to initialize the model with the 'users' table
         parent::__construct('users');
     }
 }

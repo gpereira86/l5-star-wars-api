@@ -3,7 +3,7 @@
 namespace system\controller;
 
 use Exception;
-use system\model\SwApiPy4E;
+use system\model\SwApiPy4e;
 use system\core\Helpers;
 
 /**
@@ -14,9 +14,9 @@ use system\core\Helpers;
  */
 class ApiMoviesController
 {
-    // Instance of SwApiPy4E to be used by all methods
     private $app;
     private $log;
+    private $userIP;
 
     /**
      * ApiMoviesController constructor.
@@ -24,33 +24,34 @@ class ApiMoviesController
      */
     public function __construct()
     {
-        $this->app = new SwApiPy4E();  // Create an instance of SwApiPy4E
-        $this->log = new DbRegisterController(); // Create an instance of LogModel
+        $this->app = new SwApiPy4e();
+        $this->log = new DbRegisterController();
+        $this->userIP = $this->getUserIP();
+
     }
 
     /**
      * Retrieves data for all movies.
      *
-     * This method calls the `getFilmsData()` method from the `SwApiPy4E` model to fetch data about all movies
+     * This method calls the `getFilmsData()` method from the `SwApiPy4e` model to fetch data about all movies
      * and returns it in JSON format. If an error occurs, an error message is returned with the appropriate response code.
      */
     public function allFilms()
     {
         try {
-            $films = $this->app->getFilmsData();  // Retrieve movie data
+            $films = $this->app->getFilmsData();
             $responseCode = $films['responseCode'];
 
-            Helpers::sendResponse($films);  // Return the movie data in JSON format
+            Helpers::sendResponse($films);
         } catch (Exception $e) {
-            // Handle error and return a response with status 500 and an error message
             $responseCode = 500;
             Helpers::sendResponse(['error' => 'An unexpected error occurred.', 'details' => $e->getMessage()], 500);
         } finally {
-            // Log the request
             $this->log->saveLogRegister([
                 'request_method' => 'GET',
                 'endpoint' => '/api/films',
-                'response_code' => $responseCode
+                'response_code' => $responseCode,
+                'user_ip' => $this->userIP ?? 'N/A'
             ]);
         }
     }
@@ -59,27 +60,23 @@ class ApiMoviesController
      * Retrieves and standardizes data for character names based on provided IDs.
      *
      * This method requires a POST request with a body containing an array of valid IDs.
-     * It calls the `getCharacterNamesByIds()` method from the `SwApiPy4E` model to get the character names
+     * It calls the `getCharacterNamesByIds()` method from the `SwApiPy4e` model to get the character names
      * corresponding to the provided IDs and returns the data in JSON format. If the IDs are invalid or the request
      * fails, the response will include an error message.
      */
     public function allCharacterNamesByIds()
     {
-        // Check if the request method is POST
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             Helpers::sendResponse(['error' => 'Method not allowed.'], 405);
         }
 
-        // Get and decode input data
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // Validate the input data
         if (empty($data) || !is_array($data)) {
             Helpers::sendResponse(['error' => 'At least one valid ID is required to proceed.'], 400);
         }
 
         try {
-            // Fetch character names using the provided IDs
             $names = $this->app->getCharacterNamesByIds($data);
 
             if ($names) {
@@ -93,15 +90,14 @@ class ApiMoviesController
                 Helpers::sendResponse(['error' => 'Failed to retrieve character names.'], 404);
             }
         } catch (Exception $e) {
-            // Handle exception and return an error response
             $responseCode = 500;
             Helpers::sendResponse(['error' => 'An unexpected error occurred.', 'details' => $e->getMessage()], 500);
         } finally {
-            // Log the request
             $this->log->saveLogRegister([
                 'request_method' => 'POST',
                 'endpoint' => '/api/characters-names',
-                'response_code' => $responseCode
+                'response_code' => $responseCode,
+                'user_ip' => $this->userIP ?? 'N/A'
             ]);
         }
     }
@@ -109,7 +105,7 @@ class ApiMoviesController
     /**
      * Retrieves details for a specific movie by its ID.
      *
-     * This method calls the `getFilmDetailById()` method from the `SwApiPy4E` model to fetch detailed information about a
+     * This method calls the `getFilmDetailById()` method from the `SwApiPy4e` model to fetch detailed information about a
      * movie, using the provided movie ID. The details are returned in JSON format. If an error occurs during retrieval,
      * an error message will be returned with the appropriate response code.
      *
@@ -118,20 +114,18 @@ class ApiMoviesController
     public function filmsDetailsById(string $id)
     {
         try {
-            // Retrieve movie details by ID
             $filmDetails = $this->app->getFilmDetailById($id);
             $responseCode = $filmDetails['responseCode'];
-            Helpers::sendResponse($filmDetails);  // Return the movie details in JSON format
+            Helpers::sendResponse($filmDetails);
         } catch (Exception $e) {
-            // Handle exception for retrieving movie details
             $responseCode = 500;
             Helpers::sendResponse(['error' => 'An unexpected error occurred.', 'details' => $e->getMessage()], 500);
         } finally {
-            // Log the request
             $this->log->saveLogRegister([
                 'request_method' => 'GET',
                 'endpoint' => '/api/films/details/'.$id,
-                'response_code' => $responseCode
+                'response_code' => $responseCode,
+                'user_ip' => $this->userIP ?? 'N/A'
             ]);
         }
     }
@@ -139,7 +133,7 @@ class ApiMoviesController
     /**
      * Retrieves a movie poster based on the movie name.
      *
-     * This method calls the `getPosterByMovieName()` method from the `SwApiPy4E` model to fetch the movie poster image
+     * This method calls the `getPosterByMovieName()` method from the `SwApiPy4e` model to fetch the movie poster image
      * based on the provided movie name. If the poster is found, it is returned in JSON format. If the poster is not found,
      * an error will be returned with the appropriate response code.
      *
@@ -161,11 +155,12 @@ class ApiMoviesController
             $responseCode = 500;
             Helpers::sendResponse(['error' => 'An unexpected error occurred.', 'details' => $e->getMessage()], 500);
         } finally {
-            // Log the request
+
             $this->log->saveLogRegister([
                 'request_method' => 'GET',
                 'endpoint' => '/api/movie/'.$movieName,
-                'response_code' => (string)$responseCode
+                'response_code' => (string)$responseCode,
+                'user_ip' => $this->userIP ?? 'N/A'
             ]);
         }
     }
@@ -180,9 +175,37 @@ class ApiMoviesController
      */
     public function logRegister(array $data) {
         $this->log->saveLogRegister([
+            'register_date' => date('Y-m-d H:i:s'),
             'request_method' => $data['request_method'],
             'endpoint' => $data['endpoint'],
-            'response_code' => $data['response_code']
+            'response_code' => $data['response_code'],
+            'user_ip' => $this->userIP ?? 'N/A'
         ]);
     }
+
+    /**
+     * Function to get the user's IP address.
+     *
+     * This function identifies and returns the IP address of the user accessing the page. It considers scenarios
+     * where the user may be behind a proxy, load balancer, or accessing directly.
+     *
+     * The IP will be identified in the following order:
+     * 1. `HTTP_CLIENT_IP` - When the user is behind a proxy.
+     * 2. `HTTP_X_FORWARDED_FOR` - To get the user's real IP if they are behind a reverse proxy.
+     * 3. `REMOTE_ADDR` - The client's direct IP.
+     *
+     * @return string The user's IP address.
+     */
+    private function getUserIP() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
+
 }

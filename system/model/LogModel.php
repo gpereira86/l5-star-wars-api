@@ -31,7 +31,6 @@ class LogModel extends LogDbModel
      */
     public function __construct()
     {
-        // Initialize the parent class with the name of the log table
         parent::__construct('api_logs');
     }
 }

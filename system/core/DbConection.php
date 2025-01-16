@@ -15,7 +15,7 @@ use PDOException;
 class DbConection
 {
 
-    private static $instancia; // Singleton instance of the PDO connection
+    private static $instancia;
 
     /**
      * Returns a PDO instance (singleton).
@@ -29,28 +29,25 @@ class DbConection
      */
     public static function getInstance(): PDO
     {
-        // If the instance doesn't exist, create a new one
         if (empty(self::$instancia)) {
 
             try {
-                // Create the PDO connection
                 self::$instancia = new PDO(
                     'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME,
                     DB_USERNAME,
                     DB_PASSCODE,
                     [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "set NAMES utf8", // Set character encoding to UTF-8
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Enable exception mode for errors
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, // Fetch results as objects
-                        PDO::ATTR_CASE => PDO::CASE_NATURAL // Retain original case of column names
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "set NAMES utf8",
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+                        PDO::ATTR_CASE => PDO::CASE_NATURAL
                     ]
                 );
             } catch (PDOException $ex) {
-                // If connection fails, output the error message and terminate
                 die("Connection error >>> " . $ex->getMessage());
             }
         }
-        return self::$instancia; // Return the PDO instance
+        return self::$instancia;
     }
 
     /**

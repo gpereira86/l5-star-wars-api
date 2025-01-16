@@ -27,7 +27,6 @@ class Helpers
     public static function localhost(): bool
     {
         $server = filter_input(INPUT_SERVER, 'SERVER_NAME');
-
         return $server == 'localhost';
     }
 
@@ -46,12 +45,10 @@ class Helpers
         $server = filter_input(INPUT_SERVER, 'SERVER_NAME');
         $environmentInUse = ($server == 'localhost' ? DEVELOPMENT_URL : PRODUCTION_URL);
 
-        // If the URL starts with a '/', append directly to the base URL
         if (strpos($url, '/') === 0) {
             return $environmentInUse . $url;
         }
 
-        // Otherwise, append a '/' before the provided URL
         return $environmentInUse . '/' . $url;
     }
 
@@ -66,13 +63,10 @@ class Helpers
      */
     public static function redirectUrl(string $url = null): void
     {
-        // Send a 302 Found status header for redirection
         header('HTTP/1.1 302 found');
 
-        // Determine the URL to redirect to (defaulting to home if no slug is provided)
         $local = ($url ? self::url($url) : self::url());
 
-        // Perform the actual redirection
         header("location: {$local}");
         exit();
     }
@@ -90,16 +84,9 @@ class Helpers
      */
     public static function sendResponse(array $data, int $statusCode = 200): void
     {
-        // Set the content type to JSON
         header('Content-Type: application/json');
-
-        // Set the HTTP status code for the response
         http_response_code($statusCode);
-
-        // Encode the data to JSON and send it in the response
         echo json_encode($data);
 
-        // Optionally, you could use exit() to terminate further script execution, but it's commented out here.
-        // exit;
     }
 }

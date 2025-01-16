@@ -14,6 +14,8 @@ async function fetchApi(endpoint, options = {}) {
     }
 }
 
+
+// The function below is only used when the modal is activated.
 async function fetchFilmDetails(id, modal = true) {
     const apiUrl = `${globalApiUrl}films/details/`;
     let elementId = 'filmDetailModal';
