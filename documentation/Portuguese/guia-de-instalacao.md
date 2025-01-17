@@ -35,7 +35,7 @@ RewriteRule ^ - [L]
 RewriteRule ^front-end/view/ - [L]
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
-> **Nota 1:** Confirme com o administrador do servidor se esta configuração é compatível.<br>
+> **Nota 1:** Confirme com o administrador do servidor se esta configuração é compatível.<br><br>
 > **Nota 2:** Em ambiente de desenvolvimento não é necessário uso do FilesMatch, em geral as IDEs desempenham esse papel.
 
 ---
@@ -148,9 +148,9 @@ Após o cadastro, insira a chave gerada no arquivo `secureConfig.php`, localizad
  */
 define('FILM_IMAGE_API_KEY', 'Insira sua api key aqui');
 ```
-> **Nota:** para informações sensíveis, como senhas e dados de acesso,  é recomendado o uso de arquivos `.env` ou tecnicas similares.<br>
-> Neste projeto o uso de ferramentas externas foi limitado pelos requisitos, então para evitar um possível não cumnprimento, optei por usar um arquivo a parte, denominado `secureConfig.php`, apenas para não versionar a chave de api para o github. 
-
+> **Nota 1:** para informações sensíveis, como senhas e dados de acesso,  é recomendado o uso de arquivos `.env` ou tecnicas similares.<br>
+> Neste projeto o uso de ferramentas externas foi limitado pelos requisitos, então para evitar um possível não cumnprimento, optei por usar um arquivo a parte, denominado `secureConfig.php`, apenas para não versionar a chave de api para o github<br><br>
+> **Nota 2:** é necessário manter essa variável global para funcionamento do app, caso opte por não criar uma chave, mantenha a variável vazia.
 ---
 
 ## 5. Finalização

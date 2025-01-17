@@ -39,7 +39,7 @@ RewriteRule ^front-end/view/ - [L]
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
 
-> **Note 1:** Confirm with the server administrator if this configuration is compatible.<br>
+> **Note 1:** Confirm with the server administrator if this configuration is compatible.<br><br>
 > **Note 2:** In a development environment, the `FilesMatch` directive is generally not required as most IDEs perform this task.
 
 ---
@@ -153,9 +153,9 @@ After registering, insert the generated key in the `secureConfig.php` file locat
 define('FILM_IMAGE_API_KEY', 'Insert your API key here');
 ```
 
-> **Note:** For sensitive information, such as passwords and access data, it is recommended to use `.env` files or similar techniques.<br>
-> In this project, the use of external tools was limited by the requirements, so to avoid potential non-compliance, I chose to use a separate file, called `secureConfig.php`, just to avoid versioning the API key on GitHub.
-
+> **Note 1:** For sensitive information, such as passwords and access data, it is recommended to use `.env` files or similar techniques.<br>
+> In this project, the use of external tools was limited by the requirements, so to avoid potential non-compliance, I chose to use a separate file, called `secureConfig.php`, just to avoid versioning the API key on GitHub.<br><br>
+> **Note 2:** It is necessary to keep this global variable for the app to function. If you choose not to create a key, leave the variable empty.
 ---
 
 ## 5. Finalization

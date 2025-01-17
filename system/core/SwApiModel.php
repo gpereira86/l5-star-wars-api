@@ -264,7 +264,7 @@ abstract class SwApiModel
                 'producers' => $film['producer'] ?? 'Unknown producers',
                 'characters' => $characterIds,
                 'film_age' => isset($film['release_date']) ? $this->calculateFilmAge($film['release_date']) : 'Unknown film age',
-                'moviePoster' => URL_DEVELOPMENT.'api/movie/'.rawurlencode($film['title']),
+                'moviePoster' => Helpers::url().'api/movie/'.rawurlencode($film['title']),
                 'movieTrailer' => $this->searchedYoutubeMovieTrailerUrl($film['title'] ?? 'Unknown title', 'Star Wars'),
             ];
         } else {
@@ -285,7 +285,7 @@ abstract class SwApiModel
                     'name' => $film['title'] ?? 'Unknown title',
                     'release_date' => $film['release_date'] ?? 'Release date not available',
                     'id' => isset($film['url']) ? $this->getIdFromUrl($film['url']) : 'ID not available',
-                    'moviePoster' => URL_DEVELOPMENT.'api/movie/'.rawurlencode($film['title'])
+                    'moviePoster' => Helpers::url().'api/movie/'.rawurlencode($film['title'])
                 ];
             }, $rawData['results']);
         }
