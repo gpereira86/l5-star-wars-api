@@ -50,7 +50,7 @@ function defineRoutes($uri, $requestMethod)
             Helpers::redirectUrl('error-page');
         }
 
-        // ===> Handle API Routes <===
+    // ===> Handle API Routes <===
     } elseif ($pos) {
         $movieController = new ApiMoviesController();
         $logDataController = new dbRegisterController();

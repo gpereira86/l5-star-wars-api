@@ -12,6 +12,7 @@
  *       - Avoid hardcoding sensitive values directly in the code, especially in production environments.
  *       - Use environment variables, configuration files, or secure vaults to manage secrets securely.
  *       - This file is meant as an example and should not be included in your production version.
+ * @note This should not be deleted. If you choose not to use it, leave the key blank.
  *
  * @guidance: **Don’t forget to rename this file to `secureConfig.php` or another appropriate name as per your project’s naming convention.**
  */

@@ -4,6 +4,7 @@ namespace system\controller;
 
 use Exception;
 use system\model\SwApiPy4e;
+use system\model\SwapiVercel;
 use system\core\Helpers;
 
 /**
@@ -24,7 +25,12 @@ class ApiMoviesController
      */
     public function __construct()
     {
+
+        // Software Scalability: It is possible to connect other external APIs with a simple adaptation
+        // of some fields using polymorphism (when necessary) and by replacing the instantiation.
+        // $this->app = new SwapiVercel(); // Example: uncomment this line and comment the next one.
         $this->app = new SwApiPy4e();
+
         $this->log = new DbRegisterController();
         $this->userIP = $this->getUserIP();
 

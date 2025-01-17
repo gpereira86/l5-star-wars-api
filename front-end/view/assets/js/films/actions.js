@@ -15,7 +15,7 @@ async function getApiData(url, id=null) {
                 let charactersNames = await getCharacterApiData(urlCharacterNames, filmsData.data[0]['characters']);
 
                 filmsData.data[0].charactersnames = charactersNames['charactersnames'];
-                filmsData.data[0].moviePoster = moviePosterUrl.data;
+                filmsData.data[0].moviePoster = moviePosterUrl.data === 'Poster not available' ? './../front-end/view/assets/img/starwarslogo.webp' : moviePosterUrl.data;
 
                 // displayFilmDetailsInModal(filmsData.data[0]); // Call to populate and display the modal (when activated)
                 displayFilmDetailsNewRoute(filmsData.data[0]);
@@ -36,7 +36,8 @@ async function getApiData(url, id=null) {
             for (const movie of filmsData.data) {
                 try {
                     const moviePosterUrl = await fetchApi(`${globalApiUrl}movie/${encodeURIComponent(movie.name)}`);
-                    movie.moviePoster = moviePosterUrl.data;
+                    movie.moviePoster = moviePosterUrl.data === 'Poster not available' ? './front-end/view/assets/img/starwarslogo.webp' : moviePosterUrl.data;
+
                 } catch (error) {
                     movie.moviePoster = './front-end/view/assets/img/starwarslogo.webp';
                     console.error(`Error fetching poster for ${movie.name}:`, error);

@@ -15,6 +15,7 @@ class SwApiPy4e extends SwApiModel implements ApiInterface
     protected string $baseUrl;
     protected string $filmsEndpoint = "films/";
     protected string $peopleEndpoint = "people/";
+    protected bool $adjustKeysParam = false;
 
     /**
      * SwApiPy4E constructor.

@@ -67,4 +67,6 @@ interface ApiInterface
      */
     public function searchedYoutubeMovieTrailerUrl(string $movieName, string $chanelName = ''): string;
 
+
+
 }

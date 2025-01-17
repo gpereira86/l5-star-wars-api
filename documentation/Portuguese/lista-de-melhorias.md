@@ -18,6 +18,14 @@ Durante o desenvolvimento do projeto, foram implementadas as seguintes melhorias
 - **Benefício**: Maior segurança na gestão de dados do sistema, impedindo acesso não autorizado às informações confidenciais.
 
 ---
-
 Essas melhorias foram implementadas com o intuito de tornar o sistema mais eficiente, seguro e fácil de usar, proporcionando uma experiência aprimorada para o usuário e melhor controle para os administradores.
 -
+
+> **Nota:** O software é escalável no que diz respeito à integração com APIs externas. Para eventuais alterações, pode ser necessário o uso de polimorfismo, mas, de forma geral, é possível substituir o fornecedor de dados da API sem grandes dificuldades.
+
+
+
+
+
+
+

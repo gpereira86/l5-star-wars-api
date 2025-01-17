@@ -2,7 +2,7 @@
 
 namespace system\core;
 
-use system\core\ExternalApiConection;
+use system\core\ExternalApiConnection;
 
 
 /**
@@ -24,17 +24,78 @@ abstract class SwApiModel
     protected string $posterUrl = URL_API_MOVIE_POSTER;
     protected string $youtubeUrl = URL_YOUTUBE_MOVIE_TRAILER;
 
+ 
     /**
-     * Constructor to initialize the API base URL.
+     * Fetches data from a specific API endpoint.
      *
-     * Initializes the base URL for making API requests.
+     * This method retrieves general data from the given endpoint, decodes the JSON response,
+     * and returns it as an associative array. If the request fails, it logs an error.
      *
-     * @param string $url The base URL to be used for subsequent API operations.
-     * @return void
+     * @param string $endpoint The API endpoint from which to fetch the data.
+     * @return array The response data as an associative array, or an empty array if the request fails.
      */
-    public function __construct()
+    public function fetchData(string $endpoint): array
     {
+        $response = $this->getExternalApiData($endpoint);
+
+        if ($response === false) {
+            error_log("Error fetching data from endpoint: " . $endpoint);
+            return [];
+        }
+
+        $data = json_decode($response, true);
+
+        if ($this->adjustKeysParam) {
+            $data = $this->restructureData($data);
+        }
+
+        if (is_null($data)) {
+            error_log("Invalid JSON response for endpoint: " . $endpoint);
+            return [];
+        }
+
+        return $data;
     }
+
+    /**
+     * Fetches all items from a paginated API endpoint.
+     *
+     * This method handles pagination by making multiple requests to the API endpoint,
+     * retrieving all pages of results. It maps a specified field to the item's ID.
+     *
+     * @param string $endpoint The API endpoint to fetch data from.
+     * @param string $fieldToMap The key in the response to map to the item ID.
+     * @return array An associative array where keys are item IDs and values are the mapped fields.
+     */
+    public function fetchAllFromEndpoint(string $endpoint, string $fieldToMap): array
+    {
+        $items = [];
+        $nextPage = $endpoint;
+        $page = 1;
+        while ($nextPage) {
+            $response = json_decode($this->getExternalApiData($nextPage), true);
+
+            if ($this->adjustKeysParam) {
+                $response = $this->restructureData($response);
+            }
+
+            if (isset($response['results'])) {
+                foreach ($response['results'] as $item) {
+                    $getId = $this->getIdFromUrl($item['url']);
+                    $id = $getId[0] ?? null;
+                    if ($id && isset($item[$fieldToMap])) {
+                        $items[$id] = $item[$fieldToMap];
+                    }
+                }
+            }
+
+            $page++;
+            $nextPage = isset($response['next']) ? $endpoint . '?page=' . $page . '&format=json' : null;
+        }
+
+        return $items;
+    }
+
 
     /**
      * Retrieves data from an external API using a specific endpoint.
@@ -48,6 +109,9 @@ abstract class SwApiModel
     private function getExternalApiData(string $endpoint, bool $isPosterCall = false, bool $isYoutubeCall = false)
     {
         if ($isPosterCall) {
+            if(empty(FILM_IMAGE_API_KEY)){
+                return false;
+            }
             $url = $this->posterUrl . urlencode('Star Wars: ' . $endpoint) . "&api_key=" . FILM_IMAGE_API_KEY;
         } elseif ($isYoutubeCall) {
             $url = $this->youtubeUrl . $endpoint;
@@ -55,7 +119,7 @@ abstract class SwApiModel
             $url = $this->baseUrl . $endpoint;
         }
 
-        $dataExternalApi = ExternalApiConection::makeRequest($url);
+        $dataExternalApi = ExternalApiConnection::makeRequest($url);
 
         return $dataExternalApi ? $dataExternalApi : false;
     }
@@ -103,69 +167,6 @@ abstract class SwApiModel
     }
 
     /**
-     * Fetches data from a specific API endpoint.
-     *
-     * This method retrieves general data from the given endpoint, decodes the JSON response,
-     * and returns it as an associative array. If the request fails, it logs an error.
-     *
-     * @param string $endpoint The API endpoint from which to fetch the data.
-     * @return array The response data as an associative array, or an empty array if the request fails.
-     */
-    public function fetchData(string $endpoint): array
-    {
-        $response = $this->getExternalApiData($endpoint);
-
-        if ($response === false) {
-            error_log("Error fetching data from endpoint: " . $endpoint);
-            return [];
-        }
-
-        $data = json_decode($response, true);
-
-        if (is_null($data)) {
-            error_log("Invalid JSON response for endpoint: " . $endpoint);
-            return [];
-        }
-
-        return $data;
-    }
-
-    /**
-     * Fetches all items from a paginated API endpoint.
-     *
-     * This method handles pagination by making multiple requests to the API endpoint,
-     * retrieving all pages of results. It maps a specified field to the item's ID.
-     *
-     * @param string $endpoint The API endpoint to fetch data from.
-     * @param string $fieldToMap The key in the response to map to the item ID.
-     * @return array An associative array where keys are item IDs and values are the mapped fields.
-     */
-    public function fetchAllFromEndpoint(string $endpoint, string $fieldToMap): array
-    {
-        $items = [];
-        $nextPage = $endpoint;
-        $page = 1;
-        while ($nextPage) {
-            $response = json_decode($this->getExternalApiData($nextPage), true);
-
-            if (isset($response['results'])) {
-                foreach ($response['results'] as $item) {
-                    $getId = $this->getIdFromUrl($item['url']);
-                    $id = $getId[0] ?? null;
-                    if ($id && isset($item[$fieldToMap])) {
-                        $items[$id] = $item[$fieldToMap];
-                    }
-                }
-            }
-
-            $page++;
-            $nextPage = isset($response['next']) ? $endpoint . '?page=' . $page . '&format=json' : null;
-        }
-
-        return $items;
-    }
-
-    /**
      * Calculates the age of a film based on its release date.
      *
      * This method calculates the difference between the current date and the film's release date,
@@ -173,6 +174,7 @@ abstract class SwApiModel
      *
      * @param string $releaseDate The release date of the film in 'YYYY-MM-DD' format.
      * @return string The age of the film, formatted as 'X years, Y months, Z days'.
+     * @throws \DateMalformedStringException
      */
     public function calculateFilmAge(string $releaseDate): string
     {
@@ -198,12 +200,26 @@ abstract class SwApiModel
 
         $ids = [];
         foreach ($urls as $url) {
+            $url = $this->buildUrl($url);
+            $url .= ($url[-1] !== '/') ? '/' : '';
+
             if (preg_match('/(\d+)\/$/', $url, $matches)) {
                 $ids[] = $matches[1];
             }
         }
-
         return $ids;
+    }
+
+    /**
+     * Constructs a full URL by appending the given relative path to the base URL.
+     * Ensures the base URL does not end with `/api/` or trailing slashes before concatenation.
+     *
+     * @param string $url The relative path to append to the base URL.
+     * @return string The fully constructed URL.
+     */
+    protected function buildUrl(string $url): string
+    {
+        return $url;
     }
 
     /**
@@ -223,6 +239,7 @@ abstract class SwApiModel
         $responseCode = http_response_code();
 
         $data = [];
+
 
         if (isset($rawDataParameter)) {
             $film = $this->fetchData($this->filmsEndpoint . $rawDataParameter . '/');
@@ -247,7 +264,7 @@ abstract class SwApiModel
                 'producers' => $film['producer'] ?? 'Unknown producers',
                 'characters' => $characterIds,
                 'film_age' => isset($film['release_date']) ? $this->calculateFilmAge($film['release_date']) : 'Unknown film age',
-                'moviePoster' => 'Poster not available',
+                'moviePoster' => URL_DEVELOPMENT.'api/movie/'.rawurlencode($film['title']),
                 'movieTrailer' => $this->searchedYoutubeMovieTrailerUrl($film['title'] ?? 'Unknown title', 'Star Wars'),
             ];
         } else {
@@ -262,12 +279,13 @@ abstract class SwApiModel
                 ];
             }
 
+
             $data = array_map(function ($film) {
                 return [
                     'name' => $film['title'] ?? 'Unknown title',
                     'release_date' => $film['release_date'] ?? 'Release date not available',
                     'id' => isset($film['url']) ? $this->getIdFromUrl($film['url']) : 'ID not available',
-                    'moviePoster' => 'Poster not available'
+                    'moviePoster' => URL_DEVELOPMENT.'api/movie/'.rawurlencode($film['title'])
                 ];
             }, $rawData['results']);
         }
@@ -297,8 +315,6 @@ abstract class SwApiModel
 
         return $this->getYoutubeLinkFound($url, true);
     }
-
-    // -------------------------------
 
     /**
      * Retrieves and standardizes film data from the Star Wars API.

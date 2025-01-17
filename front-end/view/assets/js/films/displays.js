@@ -45,7 +45,7 @@ function displayFilmsOnPage(movies) {
     });
 }
 
-/// ===> Function to populate the modal with the selected movie details for display.
+//// ===> Function to populate the modal with the selected movie details for display.
 // function displayFilmDetailsInModal(movie) {
 //
 //     document.getElementById('contentModalLabel').textContent = movie.name;

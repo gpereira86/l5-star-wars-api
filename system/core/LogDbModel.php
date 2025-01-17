@@ -132,7 +132,7 @@ abstract class LogDbModel
      * This method executes the query built by the `search` method and applies any sorting, limiting, and offsetting.
      *
      * @param bool $all Whether to fetch all results or just the first result.
-     * @return array|null An array of results if `$all` is true, a single object if false, or null if no results.
+     * @return string An array of results if `$all` is true, a single object if false, or null if no results.
      */
     public function result(bool $all = false)
     {
