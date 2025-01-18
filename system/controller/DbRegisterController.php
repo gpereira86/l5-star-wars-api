@@ -89,7 +89,7 @@ class DbRegisterController
             'authorized_user_id' => $checkedApiKey[0]->id
         ]);
 
-        if ($response['responseCode'] == 200) {
+        if ($response['responseCode'] == 200 && isset($response['data']['registers'])) {
             foreach ($response['data']['registers'] as &$item) {
                 if (isset($item->authorized_user_id)) {
                     $userName = $userModelInstance->searchById($checkedApiKey[0]->id);

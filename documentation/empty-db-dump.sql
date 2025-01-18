@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 17, 2025 at 01:56 PM
+-- Generation Time: Jan 18, 2025 at 08:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,7 +33,8 @@ CREATE TABLE `api_logs` (
   `request_method` varchar(10) NOT NULL,
   `endpoint` varchar(255) NOT NULL,
   `response_code` int(3) NOT NULL,
-  `user_ip` varchar(50) NOT NULL
+  `user_ip` varchar(50) NOT NULL,
+  `authorized_user_id` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

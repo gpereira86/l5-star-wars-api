@@ -6,6 +6,8 @@ This guide provides detailed instructions to set up and start the project.
 
 ## 1. Initial Setup
 
+Extract the RAR file with the project to your development or production directory and then follow the steps below:
+
 ### 1.1. Modifying the `.htaccess` File
 
 Ensure that the server is configured to use PHP version 7.4. Below is an example configuration that can be inserted into the `.htaccess` file located at the root of the project:
@@ -56,8 +58,12 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 ```
 
 > **Note 1:** Confirm with the server administrator if the PHP version configuration in `FilesMatch` is compatible.<br><br>
-> **Note 2:** In a development environment, `FilesMatch` is not necessary, as IDEs generally handle this.<br><br>
-> **Note 3:** Replace `RewriteBase` according to your project’s directory.
+> **Note 2:** In a development environment, there is no need to use `FilesMatch` for the PHP version, as IDEs generally handle this.<br><br>
+> **Note 3:** The `Files` and `FileMatch` configurations were necessary for the security of the online application; in a local development environment, these configurations are not needed and should not be applied.<br><br>
+> **Note 4:** Replace `RewriteBase` according to your project's directory.
+>
+> For any additional questions, refer to the htaccess documentation: https://httpd.apache.org/docs/2.4/howto/htaccess.html
+
 
 ---
 
@@ -80,6 +86,10 @@ Replace the values according to the development or production environment.
 
 1. Create a database with the desired name.
 2. Import the SQL file available in the `documentation` folder to set up the tables and initial data.
+
+> **Note:** After importing the Dump (file `empty-db-dump.sql`), you also have the option to import 1000 fake records,
+>           available in the same directory in the file `fake-data-to-db.sql`.<br>
+>           These data will be used for better testing of the API.
 
 ### 2.2. Database Structure
 

@@ -6,6 +6,8 @@ Este guia fornece instruções detalhadas para configurar e iniciar o projeto.
 
 ## 1. Configuração Inicial
 
+Descompacte o arquivo RAR com o projeto para o seu diretório de desenvolvimento ou produção e então siga o passo a passo a seguir:
+
 ### 1.1. Modificação do arquivo `.htaccess`
 
 Certifique-se de que o servidor está configurado para utilizar a versão 7.4 do PHP. Abaixo está o exemplo de configuração que pode ser inserido no arquivo `.htaccess` na raiz do projeto:
@@ -55,8 +57,11 @@ RewriteRule ^front-end/view/ - [L]
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
 > **Nota 1:** Confirme com o administrador do servidor se a configuração de versão do PHP em `FilesMatch` é compatível.<br><br>
-> **Nota 2:** Em ambiente de desenvolvimento não é necessário uso do `FilesMatch`, em geral as IDEs desempenham esse papel.<br><br>
-> **Nota 3:** Subistitua `RewriteBase` de acordo com o diretório do seu projeto.
+> **Nota 2:** Em ambiente de desenvolvimento não é necessário uso do `FilesMatch` para versão de PHP, em geral as IDEs desempenham esse papel.<br><br>
+> **Nota 3:** As configurações de `Filess` e `FileMatch` foram necessárias para segurança da aplicação online, em ambiente de desenvolvimento local essas configurações não são necessárias e não devem ser aplicadas.<br><br>
+> **Nota 4:** Subistitua `RewriteBase` de acordo com o diretório do seu projeto.
+> 
+> Para quaisquer dúvidas adicionais, consultar documentação do htaccess: https://httpd.apache.org/docs/2.4/howto/htaccess.html 
 
 ---
 
@@ -78,7 +83,11 @@ Substitua os valores conforme o ambiente de desenvolvimento ou produção.
 ### 2.1. Criação do Banco de Dados
 
 1. Crie um banco de dados com o nome desejado.
-2. Importe o arquivo SQL disponível na pasta `documentation` para configurar as tabelas e dados iniciais.
+2. Importe o arquivo `empty-db-dump.sql` disponível na pasta `documentation` para configurar as tabelas e dados iniciais.
+
+> **Nota:** Há opção de após importação do Dump (arquivo `empty-db-dump.sql`), realizar também a importação de 1000 
+>           registros fakes, disponíveis no mesmo caminho no arquivo `fake-data-to-db.sql`.<br>
+>           Estes dados servirão para melhor uso/teste da API. 
 
 ### 2.2. Estrutura do Banco de Dados
 
