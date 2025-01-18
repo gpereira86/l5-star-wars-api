@@ -6,18 +6,12 @@ window.onload = function () {
 
     pageError.style.visibility = 'hidden';
     pageError.style.opacity = 0;
-
     pageError.style.transition = 'opacity 3s ease-in-out';
 
-    spaceship1.style.transform = 'translateX(50vw)';
-    spaceship2.style.transform = 'translateX(-50vw)';
+    spaceship1.style.transform = 'translateX(49vw)';
+    spaceship2.style.transform = 'translateX(-51vw)';
 
     setTimeout(() => {
-        const explosionX = window.innerWidth / 2 - 75;
-        const explosionY = window.innerHeight / 2 - 75;
-
-        explosion.style.left = `${explosionX}px`;
-        explosion.style.top = `${explosionY}px`;
         explosion.style.display = 'block';
         explosion.style.opacity = 1;
 
@@ -40,6 +34,3 @@ window.onload = function () {
 
     }, 1950);
 };
-
-
-

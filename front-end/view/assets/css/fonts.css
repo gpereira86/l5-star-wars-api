@@ -47,6 +47,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'dinNext';
+    src: url('../fonts/dinnextlt/DINNextLTPro-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 
 
 

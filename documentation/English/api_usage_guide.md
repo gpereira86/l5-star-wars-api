@@ -29,10 +29,10 @@ Example:
         "films": "/api/films",
         "films-detail": "/api/films/details/{id}",
         "movie-name": "/api/movie/{movieName}",
-        "characters-names": "/api/characters-names",
-        "log-data": "/api/log-data/query"
+        "characters-names": "/l5-test/api/characters-names(POST-method-only)",
+        "log-data": "/l5-test/api/log-data/query?{API-KEY-REQUIRED}"
       },
-      "showErrorPage": true
+     "showErrorPage": true
     }
     ```
 
@@ -41,7 +41,6 @@ Example:
 - **Method**: GET
   - **Description**: Returns a list of all available movies with their respective posters.
     - **Response Example**:
-
     ```json
     {
       "method": "GET",
@@ -72,23 +71,24 @@ Example:
 
     ```json
     {
-      "method": "GET",
-      "endpoint": "/api/films/details/1",
-      "responseCode": 200,
-      "data": [
-        {
-          "name": "A New Hope",
-          "episode": 4,
-          "synopsis": "It is a period of civil war...",
-          "release_date": "1977-05-25",
-          "director": "George Lucas",
-          "producers": "Gary Kurtz, Rick McCallum",
-          "characters": ["1", "2", "3"],
-          "film_age": "47 years, 7 months, 18 days",
-          "moviePoster": "https://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg"
-        }
-      ]
-    }
+        "method": "GET",
+        "endpoint": "/api/films/details/1",
+        "responseCode": 200,
+        "data": [
+          {
+            "name": "A New Hope",
+            "episode": 4,
+            "synopsis": "It is a period of civil war...",
+            "release_date": "1977-05-25",
+            "director": "George Lucas",
+            "producers": "Gary Kurtz, Rick McCallum",
+            "characters": ["1", "2", "3"],
+            "film_age": "47 years, 7 months, 18 days",
+            "moviePoster": "https://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg",
+            "movieTrailer": "https://www.youtube.com/watch?v=vZ734NWnAHA"
+          }
+        ]
+      }
     ```
 
 ### 4. **Get Character Names by IDs**
@@ -141,25 +141,32 @@ Requires an API KEY for access.
             "count": 78,
             "registers": [
               {
-                "id": 1033,
-                "register_date": "2025-01-14 10:40:41",
+                "id": 1,
+                "register_date": "2025-01-18 12:54:47",
                 "request_method": "GET",
                 "endpoint": "/api/films",
-                "response_code": 200
+                "response_code": 200,
+                "user_ip": "::1",
+                "authorized_user_id": null
               },
               {
-                "id": 1034,
-                "register_date": "2025-01-14 10:40:42",
+                "id": 2,
+                "register_date": "2025-01-18 12:54:48",
                 "request_method": "GET",
                 "endpoint": "/api/movie/A%20New%20Hope",
-                "response_code": 200
+                "response_code": 200,
+                "user_ip": "::1",
+                "authorized_user_id": null
               },
               {
-                "id": 1035,
-                "register_date": "2025-01-14 10:40:43",
+                "id": 3,
+                "register_date": "2025-01-18 12:54:48",
                 "request_method": "GET",
                 "endpoint": "/api/movie/The%20Empire%20Strikes%20Back",
-                "response_code": 200
+                "response_code": 200,
+                "user_ip": "::1",
+                "authorized_user_id": 1,
+                "authorized_user_name": "ADMIN"
               }
             ]
           }
@@ -173,7 +180,6 @@ Requires an API KEY for access.
 - **Method**: Any method
   - **Description**: When the endpoint is not found, the API returns a 404 error.
     - **Response Example**:
-
     ```json
     {
       "error": "Route not found",

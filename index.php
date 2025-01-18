@@ -16,14 +16,12 @@
  * @global string $_SERVER['REQUEST_METHOD'] The HTTP method of the current request.
  */
 
-require_once './system/Autoloader.php'; // Autoloads classes to avoid manual includes.
-require_once './routes.php'; // Defines application routes.
-require_once './system/config.php'; // Loads configuration settings.
+require_once './system/Autoloader.php';
+require_once './routes.php';
+require_once './system/config.php';
 require_once './system/secureConfig.php'; // Loads sensitive configurations to be ignored by version control.
 
-// Retrieve the current request URI and HTTP method.
 $uri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-// Route the request to the appropriate controller or action.
 defineRoutes($uri, $requestMethod);

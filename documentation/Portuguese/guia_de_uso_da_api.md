@@ -19,21 +19,21 @@ Exemplo:
 - **URL**: /api/
 - **Método**: GET
   - **Descrição**: Retorna uma mensagem de boas-vindas ao ser acessado.
-    - **Exemplo de Resposta**:
-      ```json
-      {
-        "Method": "GET",
-        "responseCode": 200,
-        "message": "Welcome to Star Wars API!",
-        "endpoints": {
-          "films": "/api/films",
-          "films-detail": "/api/films/details/{id}",
-          "movie-name": "/api/movie/{movieName}",
-          "characters-names": "/api/characters-names",
-          "log-data": "/api/log-data/query"
-        },
-       "showErrorPage": true
-      }
+  - **Exemplo de Resposta**:
+    ```json
+    {
+      "Method": "GET",
+      "responseCode": 200,
+      "message": "Welcome to Star Wars API!",
+      "endpoints": {
+        "films": "/api/films",
+        "films-detail": "/api/films/details/{id}",
+        "movie-name": "/api/movie/{movieName}",
+        "characters-names": "/api/characters-names(POST-method-only)",
+        "log-data": "/api/log-data/query?{API-KEY-REQUIRED}"
+      },
+     "showErrorPage": true
+    }
     ```
 
 ### 2. **Listar Todos os Filmes**
@@ -83,7 +83,8 @@ Exemplo:
             "producers": "Gary Kurtz, Rick McCallum",
             "characters": ["1", "2", "3"],
             "film_age": "47 years, 7 months, 18 days",
-            "moviePoster": "https://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg"
+            "moviePoster": "https://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg",
+            "movieTrailer": "https://www.youtube.com/watch?v=vZ734NWnAHA"
           }
         ]
       }
@@ -136,25 +137,32 @@ Necessita de uma API KEY para acesso.
             "count": 78,
             "registers": [
               {
-                "id": 1033,
-                "register_date": "2025-01-14 10:40:41",
+                "id": 1,
+                "register_date": "2025-01-18 12:54:47",
                 "request_method": "GET",
                 "endpoint": "/api/films",
-                "response_code": 200
+                "response_code": 200,
+                "user_ip": "::1",
+                "authorized_user_id": null
               },
               {
-                "id": 1034,
-                "register_date": "2025-01-14 10:40:42",
+                "id": 2,
+                "register_date": "2025-01-18 12:54:48",
                 "request_method": "GET",
                 "endpoint": "/api/movie/A%20New%20Hope",
-                "response_code": 200
+                "response_code": 200,
+                "user_ip": "::1",
+                "authorized_user_id": null
               },
               {
-                "id": 1035,
-                "register_date": "2025-01-14 10:40:43",
+                "id": 3,
+                "register_date": "2025-01-18 12:54:48",
                 "request_method": "GET",
                 "endpoint": "/api/movie/The%20Empire%20Strikes%20Back",
-                "response_code": 200
+                "response_code": 200,
+                "user_ip": "::1",
+                "authorized_user_id": 1,
+                "authorized_user_name": "ADMIN"
               }
             ]
           }

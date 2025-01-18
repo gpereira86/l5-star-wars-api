@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // The mechanism below enables the modal's content to be populated on the page.
     // loadContent(`${baseUrl}front-end/view/modal.html`, 'modal-content');
 
+
     getApiData(apiUrl);
 
     console.info("May the Force be with you!");

@@ -3,9 +3,7 @@
 namespace system\core;
 
 use DateTime;
-use Exception;
 use system\core\DbConection;
-use system\model\UserModel;
 
 /**
  * Abstract class responsible for logging data into a database.
@@ -123,6 +121,7 @@ abstract class LogDbModel
         }
 
         $this->query = "SELECT {$columns} FROM " . $this->table;
+
         return $this;
     }
 
@@ -190,6 +189,10 @@ abstract class LogDbModel
      */
     public function save(array $data)
     {
+        if (!array_key_exists('register_date', $data)) {
+            $data['register_date'] = date('Y-m-d H:i:s');
+        }
+
         return $this->register($data);
     }
 
@@ -261,17 +264,28 @@ abstract class LogDbModel
     /**
      * Verifies the validity of an API key.
      *
-     * This method checks if the provided API key exists in the `UserModel` table, ensuring the request is authorized.
+     * This method checks if the provided API key exists in the database,
+     * ensuring the request is authorized.
      *
      * @param string $key The API key to validate.
-     * @return bool True if the key is valid, otherwise false.
+     * @return mixed The result of the search if the key is valid, otherwise false.
      */
-    public function checkApiKey(string $key): bool
+    public function checkApiKey(string $key)
     {
-        $userDb = new UserModel();
-        $findApiKey = $userDb->search("api_key = ".$key)->result(true);
+        return $this->search("api_key = '{$key}'")->result(true);
+    }
 
-        return (bool)$findApiKey;
+    /**
+     * Searches for a record by its ID.
+     *
+     * This method retrieves a record from the database using the provided ID.
+     *
+     * @param string $id The ID of the record to search for.
+     * @return mixed The result of the search if the ID exists, otherwise false.
+     */
+    public function searchById(string $id)
+    {
+        return $this->search("id = '{$id}'")->result(true);
     }
 
 }

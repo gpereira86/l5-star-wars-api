@@ -2,6 +2,8 @@
 
 namespace system\controller;
 
+use system\core\Helpers;
+
 /**
  * SiteController is responsible for handling the rendering of different pages for the site.
  *
@@ -18,7 +20,7 @@ class SiteController
      */
     public function index()
     {
-        $this->renderHTML('./front-end/view/index.html');
+        $this->renderHTML('./front-end/view/index.html', ['Teste']);
     }
 
     /**
@@ -31,11 +33,49 @@ class SiteController
      * @param string $movieName The name of the movie whose details are to be displayed.
      * @param array $data Optional data to be passed to the view, such as movie information.
      */
-    public function movieDetailPage($movieName, $data = [])
+    public function movieDetailPage()
     {
-        $data['movieName'] = $movieName;
-        $this->renderHTML('./front-end/view/movie-details.html', $data);
+        $this->renderHTML('./front-end/view/movie-details.html');
     }
+
+
+    /**
+     * Downloads a file to the user.
+     *
+     * This method checks if the specified file exists on the server. If it does, it sends the necessary
+     * headers to the browser to trigger the file download. It then outputs the file content to the user.
+     * If the file does not exist, it sends a 404 HTTP response and redirects the user to an error page.
+     *
+     * @return void
+     */
+    public function downloadFile()
+    {
+        $filePath = './arquivo-site-l5test/test-l5-compactado.rar';
+
+        if (file_exists($filePath)) {
+
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/x-rar-compressed');
+            header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
+            header('Content-Length: ' . filesize($filePath));
+            header('Cache-Control: no-cache, no-store, must-revalidate');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+
+            ob_clean();
+            flush();
+
+            readfile($filePath);
+
+            exit;
+        } else {
+            http_response_code(404);
+            sleep(2);
+            Helpers::redirectUrl('error-page');
+        }
+    }
+
+
 
     /**
      * Renders the error page.

@@ -1,6 +1,3 @@
-Aqui está o guia traduzido para o inglês em formato Markdown:
-
-```markdown
 # Project Installation Guide
 
 This guide provides detailed instructions to set up and start the project.
@@ -14,19 +11,38 @@ This guide provides detailed instructions to set up and start the project.
 Ensure that the server is configured to use PHP version 7.4. Below is an example configuration that can be inserted into the `.htaccess` file located at the root of the project:
 
 ```apache
-# Set PHP version 7.4 for this project
+# Define PHP version 7.4 for this project on your project (server: hostinger)
+# Check with your server provider for the method to declare the PHP version used
 <FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
     SetHandler application/x-lsphp74
 </FilesMatch>
 
-# Security and redirects
+<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
+    SetHandler application/x-lsphp74
+</FilesMatch>
+
+<Files "*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|svg|webp|ico|bmp|tiff)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+<Files "index.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
 Options -Indexes
 RewriteEngine On
 
-# Production use
+# Used in production
 RewriteBase /
-
-## Development use
+ 
+## Used in development
 # RewriteBase /l5-test/
 
 RewriteCond %{REQUEST_FILENAME} -f
@@ -39,8 +55,9 @@ RewriteRule ^front-end/view/ - [L]
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
 
-> **Note 1:** Confirm with the server administrator if this configuration is compatible.<br><br>
-> **Note 2:** In a development environment, the `FilesMatch` directive is generally not required as most IDEs perform this task.
+> **Note 1:** Confirm with the server administrator if the PHP version configuration in `FilesMatch` is compatible.<br><br>
+> **Note 2:** In a development environment, `FilesMatch` is not necessary, as IDEs generally handle this.<br><br>
+> **Note 3:** Replace `RewriteBase` according to your project’s directory.
 
 ---
 

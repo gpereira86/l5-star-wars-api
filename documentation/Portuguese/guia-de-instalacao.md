@@ -11,19 +11,38 @@ Este guia fornece instruções detalhadas para configurar e iniciar o projeto.
 Certifique-se de que o servidor está configurado para utilizar a versão 7.4 do PHP. Abaixo está o exemplo de configuração que pode ser inserido no arquivo `.htaccess` na raiz do projeto:
 
 ```apache
-# Definir a versão 7.4 do PHP para este projeto
+# Define PHP version 7.4 for this project on your project (server: hostinger)
+# Check with your server provider for the method to declare the PHP version used
 <FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
     SetHandler application/x-lsphp74
 </FilesMatch>
 
-# Segurança e redirecionamentos
+<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
+    SetHandler application/x-lsphp74
+</FilesMatch>
+
+<Files "*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|svg|webp|ico|bmp|tiff)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+<Files "index.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
 Options -Indexes
 RewriteEngine On
 
-# Uso em produção
+# Used in production
 RewriteBase /
  
-## Uso em desenvolvimento
+## Used in development
 # RewriteBase /l5-test/
 
 RewriteCond %{REQUEST_FILENAME} -f
@@ -35,8 +54,9 @@ RewriteRule ^ - [L]
 RewriteRule ^front-end/view/ - [L]
 RewriteRule ^(.*)$ index.php [QSA,L]
 ```
-> **Nota 1:** Confirme com o administrador do servidor se esta configuração é compatível.<br><br>
-> **Nota 2:** Em ambiente de desenvolvimento não é necessário uso do FilesMatch, em geral as IDEs desempenham esse papel.
+> **Nota 1:** Confirme com o administrador do servidor se a configuração de versão do PHP em `FilesMatch` é compatível.<br><br>
+> **Nota 2:** Em ambiente de desenvolvimento não é necessário uso do `FilesMatch`, em geral as IDEs desempenham esse papel.<br><br>
+> **Nota 3:** Subistitua `RewriteBase` de acordo com o diretório do seu projeto.
 
 ---
 

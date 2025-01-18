@@ -56,10 +56,12 @@ class DbRegisterController
             $endpoint, 'apikey=SECRET-KEY', strpos($endpoint, 'apikey')
         ) : $endpoint;
 
-        $checkApiKey = new UserModel();
+        $userModelInstance = new UserModel();
         $apiMovieController = new ApiMoviesController();
 
-        if (empty($apiKey) || !$checkApiKey->checkApiKey($apiKey)) {
+        $checkedApiKey = $apiKey == null ? false : $userModelInstance->checkApiKey($apiKey);
+
+        if (empty($apiKey) || !$checkedApiKey) {
             $responCode = 401;
 
             $apiMovieController->logRegister([
@@ -83,8 +85,18 @@ class DbRegisterController
         $apiMovieController->logRegister([
             'endpoint' => $endpointSecretKey,
             'request_method' => $method,
-            'response_code' => $response['responseCode']
+            'response_code' => $response['responseCode'],
+            'authorized_user_id' => $checkedApiKey[0]->id
         ]);
+
+        if ($response['responseCode'] == 200) {
+            foreach ($response['data']['registers'] as &$item) {
+                if (isset($item->authorized_user_id)) {
+                    $userName = $userModelInstance->searchById($checkedApiKey[0]->id);
+                    $item->authorized_user_name = $userName[0]->name;
+                }
+            }
+        }
 
         http_response_code(200);
         return json_encode([

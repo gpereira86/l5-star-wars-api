@@ -28,6 +28,7 @@ function defineRoutes($uri, $requestMethod)
 
     $pos = strpos($uri, 'api/');
 
+
     // ===> Handle Site Routes <===
     if (!$pos) {
         $siteController = new SiteController();
@@ -38,12 +39,16 @@ function defineRoutes($uri, $requestMethod)
 
         } elseif (preg_match("#^{$baseSiteUri}movie/([^/]+)$#", $uri, $matches) && $requestMethod === 'GET') {
             http_response_code(200);
-            $movieName = $matches[1];
-            $siteController->movieDetailPage($movieName);
+            $siteController->movieDetailPage();
 
         } elseif ($uri === "{$baseSiteUri}error-page" && $requestMethod === 'GET') {
             http_response_code(404);
             $siteController->errorPage();
+
+        } elseif ($uri === "{$baseSiteUri}download/project" && $requestMethod === 'GET') {
+
+            http_response_code(200);
+            $siteController->downloadFile();
 
         } else {
             http_response_code(404);
@@ -66,8 +71,8 @@ function defineRoutes($uri, $requestMethod)
                     "films" => "{$baseApiUri}films",
                     "films-detail" => "{$baseApiUri}films/details/{id}",
                     "movie-poster" => "{$baseApiUri}movie/{movieName}",
-                    "characters-names" => "{$baseApiUri}characters-names (POST)",
-                    "log-data" => "{$baseApiUri}log-data/query (API KEY REQUIRED)"
+                    "characters-names" => "{$baseApiUri}characters-names(POST-method-only)",
+                    "log-data" => "{$baseApiUri}log-data/query?{API-KEY-REQUIRED}"
                 ],
             ]);
 
@@ -107,5 +112,8 @@ function defineRoutes($uri, $requestMethod)
                 'response_code' => 404
             ]);
         }
+    } else {
+        http_response_code(404);
+        Helpers::redirectUrl('error-page');
     }
 }

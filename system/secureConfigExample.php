@@ -14,7 +14,9 @@
  *       - This file is meant as an example and should not be included in your production version.
  * @note This should not be deleted. If you choose not to use it, leave the key blank.
  *
- * @guidance: **Don’t forget to rename this file to `secureConfig.php` or another appropriate name as per your project’s naming convention.**
+ * @guidance: **Don’t forget to rename this file to `secureConfig.php` or another appropriate name as per
+ *            your project’s naming convention. If the name is different from `secureConfig.php`, it is
+ *            necessary to update the name in the `index.php` file in the root directory.**
  */
 define('FILM_IMAGE_API_KEY', ''); // Your API key for the movie poster service goes here.
 

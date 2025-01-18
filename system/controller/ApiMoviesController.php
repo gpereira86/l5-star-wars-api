@@ -28,7 +28,7 @@ class ApiMoviesController
 
         // Software Scalability: It is possible to connect other external APIs with a simple adaptation
         // of some fields using polymorphism (when necessary) and by replacing the instantiation.
-        // $this->app = new SwapiVercel(); // Example: uncomment this line and comment the next one.
+//        $this->app = new SwapiVercel(); // Example: uncomment this line and comment the next one.
         $this->app = new SwApiPy4e();
 
         $this->log = new DbRegisterController();
@@ -180,12 +180,13 @@ class ApiMoviesController
      * @param array $data Request data, including 'request_method', 'endpoint', and 'response_code'.
      */
     public function logRegister(array $data) {
+
         $this->log->saveLogRegister([
-            'register_date' => date('Y-m-d H:i:s'),
             'request_method' => $data['request_method'],
             'endpoint' => $data['endpoint'],
             'response_code' => $data['response_code'],
-            'user_ip' => $this->userIP ?? 'N/A'
+            'user_ip' => $this->userIP ?? 'N/A',
+            'authorized_user_id' => $data['authorized_user_id'] ?? null
         ]);
     }
 

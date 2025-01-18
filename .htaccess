@@ -1,17 +1,43 @@
+## Define PHP version 7.4 for this project on your project (server: hostinger)
+## Check with your server provider for the method to declare the PHP version used
+#<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
+#    SetHandler application/x-lsphp74
+#</FilesMatch>
+
+#<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
+#    SetHandler application/x-lsphp74
+#</FilesMatch>
+#
+#<Files "*">
+#    Order Deny,Allow
+#    Deny from all
+#</Files>
+#
+#<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|svg|webp|ico|bmp|tiff)$">
+#    Order Allow,Deny
+#    Allow from all
+#</FilesMatch>
+#
+#<Files "index.php">
+#    Order Allow,Deny
+#    Allow from all
+#</Files>
+
+Options -Indexes
 RewriteEngine On
+
+## Used in production
+#RewriteBase /
+
+# Used in development
 RewriteBase /l5-test/
 
-# Do not rewrite requests for existing files (CSS, JS, images, etc.)
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
-# Do not rewrite requests for existing directories
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-## Exception for the path 'front-end/view/'
-#RewriteRule ^front-end/view/ - [L]
+RewriteRule ^front-end/view/ - [L]
 
-# Rewrite all other requests to index.php
 RewriteRule ^(.*)$ index.php [QSA,L]
-

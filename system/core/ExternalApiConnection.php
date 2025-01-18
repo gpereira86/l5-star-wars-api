@@ -2,8 +2,6 @@
 
 namespace system\core;
 
-use http\Params;
-
 class ExternalApiConnection
 {
     /**
