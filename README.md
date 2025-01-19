@@ -13,7 +13,7 @@ No front-end, o projeto será desenvolvido utilizando HTML e JavaScript, com o l
 
 A instalação é simples e rápida, permitindo colocar o site em funcionamento em poucos passos e em pouco tempo.
 
-- [Guia de Instalação (português)](documentation/Portuguese/guia-de-instalacao.md) <br>
+- [Guia de Instalação (português)](documentation/Portuguese/guia-de-instalacao.md)
 
 
 ### Uso da API:
@@ -21,3 +21,27 @@ A instalação é simples e rápida, permitindo colocar o site em funcionamento 
 O uso da API é intuitivo, com um guia simples disponível na URL base. No próximo guia, você encontrará instruções claras e diretas, com exemplos de solicitação e resposta, quando aplicável.
 
 - [Guia de uso da API (português)](documentation/Portuguese/guia_de_uso_da_api.md)
+
+___
+
+PHP 7.4 Project for Creating a Back-end API
+
+This project focuses on developing a back-end for an API that consumes data from an external API, using only native PHP 7.4 tools. cURL will be used for making requests to the external API, without relying on external packages, libraries, or frameworks.
+
+On the front-end, the project will be developed using HTML and JavaScript, with the layout built using both CSS and Bootstrap. This will ensure a responsive, intuitive, and customized interface, providing a pleasant user experience across different devices.<br>
+
+## Getting Started
+
+### Installation:
+
+The installation is simple and quick, allowing you to get the site up and running in just a few steps and in no time.
+
+- [Installation Guide (English)](documentation/English/setup-guide.md)
+  
+### API Usage:
+
+The API usage is intuitive, with a simple guide available at the base URL. The next guide provides clear and direct instructions, with request and response examples where applicable.
+
+- [API Usage Guide (English)](documentation/English/api_usage_guide.md)
+
+
