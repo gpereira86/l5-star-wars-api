@@ -3,5 +3,6 @@
 ## Guia inicial
 ___
 
-
+[Documentação (português)](documantation/portuguese)
+[Documantation (english)](documantation/english)
 
