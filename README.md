@@ -12,5 +12,5 @@ No front-end, o projeto será desenvolvido utilizando HTML e JavaScript, com o l
 
 A instalação é simples e rápida, permitindo colocar o site em funcionamento em poucos passos e em pouco tempo.
 
-- [Guia de Instalação (português)](documentation/Portuguese/guia-de-instalacao)
+- [Guia de Instalação (português)](documentation/Portuguese/guia-de-instalacao.md)
 
