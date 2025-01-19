@@ -1,5 +1,7 @@
 # Star Wars Site/API - L5 Test
 
+## Português
+
 Projeto em PHP 7.4 para Criação de Back-end de API
 
 Este projeto visa o desenvolvimento de um back-end para uma API que consome dados de uma API externa, utilizando exclusivamente ferramentas nativas do PHP 7.4. Para realizar as requisições à API externa, será utilizado o cURL, sem a dependência de pacotes externos, bibliotecas ou frameworks.
@@ -23,6 +25,9 @@ O uso da API é intuitivo, com um guia simples disponível na URL base. No próx
 - [Guia de uso da API (português)](documentation/Portuguese/guia_de_uso_da_api.md)
 
 ___
+___
+
+## English
 
 PHP 7.4 Project for Creating a Back-end API
 
