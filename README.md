@@ -7,7 +7,7 @@ A aplicação já está disponível online e pode ser acessada pelo link abaixo:
 - <a href="https://swl5test.glaucopereira.com" target="_blank">Star Wars Site/API - L5 Test</a>
 
 Explore o projeto, utilize a API e confira a documentação para facilitar a instalação e o uso.
-____
+___
 
 ### **Welcome to the Star Wars Site/API - L5 Test!**
 
@@ -17,7 +17,8 @@ The application is now available online and can be accessed through the link bel
 
 Explore the project, use the API, and check the documentation to simplify installation and usage.
 
-____
+___
+___
 
 ## Guia inicial - Português
 
