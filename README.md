@@ -2,5 +2,5 @@
 
 ## Guia inicial:
 - [Documentação (português)](documentation/Portuguese) <br>
-- [Documantation (english)](documantation/English)
+- [Documantation (english)](documentation/English)
 
