@@ -1,25 +1,31 @@
 # Star Wars Site/API - L5 Test
 
-Bem-vindo ao Star Wars Site/API - L5 Test!
+### **Bem-vindo ao Star Wars Site/API - L5 Test! <=**
 
 A aplicação já está disponível online e pode ser acessada pelo link abaixo:
 
 - <a href="https://swl5test.glaucopereira.com" target="_blank">Star Wars Site/API - L5 Test</a>
 
-
 Explore o projeto, utilize a API e confira a documentação para facilitar a instalação e o uso.
-Aplicação funcionando: 
+____
 
-## Português
+### **Welcome to the Star Wars Site/API - L5 Test!**
+
+The application is now available online and can be accessed through the link below:
+
+- <a href="https://swl5test.glaucopereira.com" target="_blank">Star Wars Site/API - L5 Test</a>
+
+Explore the project, use the API, and check the documentation to simplify installation and usage.
+
+____
+
+## Guia inicial - Português
 
 Projeto em PHP 7.4 para Criação de Back-end de API
 
 Este projeto visa o desenvolvimento de um back-end para uma API que consome dados de uma API externa, utilizando exclusivamente ferramentas nativas do PHP 7.4. Para realizar as requisições à API externa, será utilizado o cURL, sem a dependência de pacotes externos, bibliotecas ou frameworks.
 
 No front-end, o projeto será desenvolvido utilizando HTML e JavaScript, com o layout sendo construído tanto com CSS quanto com Bootstrap. Isso garantirá uma interface responsiva, intuitiva e personalizada, proporcionando uma experiência de usuário agradável em diferentes dispositivos.<br>
-
-
-## Guia inicial
 
 ### Instalação:
 
@@ -39,15 +45,13 @@ O uso da API é intuitivo, com um guia simples disponível na URL base. No próx
 ___
 ___
 
-## English
+## Getting Started - English
 
 PHP 7.4 Project for Creating a Back-end API
 
 This project focuses on developing a back-end for an API that consumes data from an external API, using only native PHP 7.4 tools. cURL will be used for making requests to the external API, without relying on external packages, libraries, or frameworks.
 
 On the front-end, the project will be developed using HTML and JavaScript, with the layout built using both CSS and Bootstrap. This will ensure a responsive, intuitive, and customized interface, providing a pleasant user experience across different devices.<br>
-
-## Getting Started
 
 ### Installation:
 
