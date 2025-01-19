@@ -4,10 +4,6 @@
 #    SetHandler application/x-lsphp74
 #</FilesMatch>
 #
-#<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
-#    SetHandler application/x-lsphp74
-#</FilesMatch>
-#
 #<Files "*">
 #    Order Deny,Allow
 #    Deny from all
@@ -17,6 +13,7 @@
 #    Order Allow,Deny
 #    Allow from all
 #</FilesMatch>
+
 #<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|svg|webp|ico|bmp|tiff)$">
 #    Order Allow,Deny
 #    Allow from all

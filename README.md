@@ -17,6 +17,8 @@ A instalação é simples e rápida, permitindo colocar o site em funcionamento 
 
 - [Guia de Instalação (português)](documentation/Portuguese/guia-de-instalacao.md)
 
+> **Nota:** O arquivo README.md e a pasta documentation não são necessários para o funcionamento da aplicação no servidor. A inclusão desses itens é opcional.
+
 
 ### Uso da API:
 
@@ -42,6 +44,8 @@ On the front-end, the project will be developed using HTML and JavaScript, with 
 The installation is simple and quick, allowing you to get the site up and running in just a few steps and in no time.
 
 - [Installation Guide (English)](documentation/English/setup-guide.md)
+
+> **Note:** The README.md file and the documentation folder are not required for the application to function on the server. Including these items is optional.
   
 ### API Usage:
 
