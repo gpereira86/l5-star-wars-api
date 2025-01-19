@@ -4,7 +4,7 @@ Bem-vindo ao Star Wars Site/API - L5 Test!
 
 A aplicação já está disponível online e pode ser acessada pelo link abaixo:
 
-- [Star Wars Site/API - L5 Test](https://swl5test.glaucopereira.com)
+- [Star Wars Site/API - L5 Test](https://swl5test.glaucopereira.com){:target="_blank"}
 
 Explore o projeto, utilize a API e confira a documentação para facilitar a instalação e o uso.
 Aplicação funcionando: 
