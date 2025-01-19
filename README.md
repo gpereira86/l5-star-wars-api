@@ -3,6 +3,6 @@
 ## Guia inicial
 ___
 
-- [Documentação (português)](documantation/portuguese) <be>
+- [Documentação (português)](documantation/portuguese) <br>
 - [Documantation (english)](documantation/english)
 
