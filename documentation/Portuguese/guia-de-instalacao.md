@@ -73,10 +73,10 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 Atualize a URL base do projeto no arquivo `util.js`, localizado em `front-end/view/assets/js/utils`:
 
 ```javascript
-window.globalApiUrl = 'http://localhost/l5-test/api/';
+window.globalSiteUrl = 'http://localhost/l5-test/api/';
 ```
 
-Substitua os valores conforme o ambiente de desenvolvimento ou produção.
+Substitua o valor conforme o ambiente de desenvolvimento ou produção.
 
 ---
 
@@ -146,7 +146,8 @@ Ajuste as configurações conforme os dados de acesso do banco de dados criados 
 
 ```php
 /**
- * Configurações de conexão ao banco de dados.
+ * Database connection settings.
+ * These constants define the necessary credentials and configuration for connecting to the database.
  */
 define('DB_HOST', 'localhost');
 define('DB_PORT', '3306');
@@ -161,10 +162,18 @@ Atualize os URLs de acordo com o diretório do seu projeto.
 
 ```php
 /**
- * URLs base para ambientes de produção e desenvolvimento.
+ * Base URLs for the production and development environments.
+ * These constants define the base URLs for different environments to ensure proper routing.
  */
-define('PRODUCTION_URL', 'https://seuprojeto.com');
-define('DEVELOPMENT_URL', 'http://localhost/l5-test');
+define('PRODUCTION_URL', 'https://your-production-site-url.here');
+define('DEVELOPMENT_URL', 'http://localhost/l5-test'); // Adjust for your development directory structure
+
+/**
+ * URLs for the site in different environments.
+ * These constants define the base URLs for site routing depending on the environment.
+ */
+define('URL_PRODUCTION', '/');
+define('URL_DEVELOPMENT', '/l5-test/'); // Adjust for your development directory structure
 ```
 
 ---
@@ -178,9 +187,6 @@ Para exibir capas de filmes, é necessário se cadastrar na API The Movie Databa
 Após o cadastro, insira a chave gerada no arquivo `secureConfig.php`, localizado na pasta `system`.
 
 ```php
-/**
- * API key The Movie Database.
- */
 define('FILM_IMAGE_API_KEY', 'Insira sua api key aqui');
 ```
 > **Nota 1:** para informações sensíveis, como senhas e dados de acesso,  é recomendado o uso de arquivos `.env` ou tecnicas similares.<br>

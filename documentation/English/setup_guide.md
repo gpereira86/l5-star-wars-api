@@ -75,7 +75,7 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 Update the project's base URL in the `util.js` file, located in `front-end/view/assets/js/utils`:
 
 ```javascript
-window.globalApiUrl = 'http://localhost/l5-test/api/';
+window.globalSiteUrl = 'http://localhost/l5-test/api/';
 ```
 
 Replace the values according to the development or production environment.
@@ -149,6 +149,7 @@ Adjust the settings according to the database access credentials created in the 
 ```php
 /**
  * Database connection settings.
+ * These constants define the necessary credentials and configuration for connecting to the database.
  */
 define('DB_HOST', 'localhost');
 define('DB_PORT', '3306');
@@ -163,10 +164,18 @@ Update the URLs according to your project's directory.
 
 ```php
 /**
- * Base URLs for production and development environments.
+ * Base URLs for the production and development environments.
+ * These constants define the base URLs for different environments to ensure proper routing.
  */
-define('PRODUCTION_URL', 'https://yourproject.com');
-define('DEVELOPMENT_URL', 'http://localhost/l5-test');
+define('PRODUCTION_URL', 'https://your-production-site-url.here');
+define('DEVELOPMENT_URL', 'http://localhost/l5-test'); // Adjust for your development directory structure
+
+/**
+ * URLs for the site in different environments.
+ * These constants define the base URLs for site routing depending on the environment.
+ */
+define('URL_PRODUCTION', '/');
+define('URL_DEVELOPMENT', '/l5-test/'); // Adjust for your development directory structure
 ```
 
 ---
@@ -180,9 +189,6 @@ To display movie posters, you need to register for The Movie Database API. Regis
 After registering, insert the generated key in the `secureConfig.php` file located in the `system` folder.
 
 ```php
-/**
- * The Movie Database API key.
- */
 define('FILM_IMAGE_API_KEY', 'Insert your API key here');
 ```
 
