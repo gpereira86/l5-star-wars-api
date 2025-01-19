@@ -8,6 +8,8 @@ This guide provides detailed instructions to set up and start the project.
 
 Extract the RAR file with the project to your development or production directory and then follow the steps below:
 
+> **Note:** The documentation folder is not required for the application to function on the server. Including this item is optional.
+
 ### 1.1. Modifying the `.htaccess` File
 
 Ensure that the server is configured to use PHP version 7.4. Below is an example configuration that can be inserted into the `.htaccess` file located at the root of the project:

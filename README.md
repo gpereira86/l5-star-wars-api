@@ -1,5 +1,14 @@
 # Star Wars Site/API - L5 Test
 
+Bem-vindo ao Star Wars Site/API - L5 Test!
+
+A aplicação já está disponível online e pode ser acessada pelo link abaixo:
+
+- [Star Wars Site/API - L5 Test](https://swl5test.glaucopereira.com)
+
+Explore o projeto, utilize a API e confira a documentação para facilitar a instalação e o uso.
+Aplicação funcionando: 
+
 ## Português
 
 Projeto em PHP 7.4 para Criação de Back-end de API

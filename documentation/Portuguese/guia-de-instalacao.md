@@ -8,6 +8,8 @@ Este guia fornece instruções detalhadas para configurar e iniciar o projeto.
 
 Descompacte o arquivo RAR com o projeto para o seu diretório de desenvolvimento ou produção e então siga o passo a passo a seguir:
 
+> **Nota:** A pasta documentation não é necessária para o funcionamento da aplicação no servidor. A inclusão desse item é opcional.
+
 ### 1.1. Modificação do arquivo `.htaccess`
 
 Certifique-se de que o servidor está configurado para utilizar a versão 7.4 do PHP. Abaixo está o exemplo de configuração que pode ser inserido no arquivo `.htaccess` na raiz do projeto:
