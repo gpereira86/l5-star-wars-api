@@ -19,14 +19,15 @@ Certifique-se de que o servidor está configurado para utilizar a versão 7.4 do
     SetHandler application/x-lsphp74
 </FilesMatch>
 
-<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
-    SetHandler application/x-lsphp74
-</FilesMatch>
-
 <Files "*">
     Order Deny,Allow
     Deny from all
 </Files>
+
+<FilesMatch "\.(eot|otf|ttf|woff|woff2|svg)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
 
 <FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|svg|webp|ico|bmp|tiff)$">
     Order Allow,Deny
@@ -67,11 +68,10 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 
 ### 1.2. Alteração do arquivo `util.js`
 
-Atualize as URLs base do projeto no arquivo `util.js`, localizado em `front-end/view/assets/js/utils`:
+Atualize a URL base do projeto no arquivo `util.js`, localizado em `front-end/view/assets/js/utils`:
 
 ```javascript
 window.globalApiUrl = 'http://localhost/l5-test/api/';
-window.globalSiteUrl = 'http://localhost/l5-test/';
 ```
 
 Substitua os valores conforme o ambiente de desenvolvimento ou produção.
@@ -140,6 +140,8 @@ Edite o arquivo `Config.php`, localizado na pasta `system`, com as configuraçõ
 
 ### 3.1. Dados do Banco de Dados
 
+Ajuste as configurações conforme os dados de acesso do banco de dados criados no passo anterior.
+
 ```php
 /**
  * Configurações de conexão ao banco de dados.
@@ -152,6 +154,8 @@ define('DB_PASSCODE', '');
 ```
 
 ### 3.2. URLs do Sistema
+
+Atualize os URLs de acordo com o diretório do seu projeto.
 
 ```php
 /**

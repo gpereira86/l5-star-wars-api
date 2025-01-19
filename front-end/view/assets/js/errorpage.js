@@ -34,3 +34,5 @@ window.onload = function () {
 
     }, 1950);
 };
+
+console.info("The Force is not strong with this one.");

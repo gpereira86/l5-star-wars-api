@@ -26,6 +26,6 @@ function createSlug(texto) {
 
 window.formatDateUS = formatDateUS;
 window.createSlug = createSlug;
-window.globalApiUrl = 'http://localhost/l5-test/api/';
 window.globalSiteUrl = 'http://localhost/l5-test/';
+window.globalApiUrl = `${globalSiteUrl}api/`;
 window.globalLogRegisterUrl = `${globalApiUrl}log-register`;

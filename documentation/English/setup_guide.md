@@ -19,14 +19,15 @@ Ensure that the server is configured to use PHP version 7.4. Below is an example
     SetHandler application/x-lsphp74
 </FilesMatch>
 
-<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
-    SetHandler application/x-lsphp74
-</FilesMatch>
-
 <Files "*">
     Order Deny,Allow
     Deny from all
 </Files>
+
+<FilesMatch "\.(eot|otf|ttf|woff|woff2|svg)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
 
 <FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|svg|webp|ico|bmp|tiff)$">
     Order Allow,Deny
@@ -69,11 +70,10 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 
 ### 1.2. Modifying the `util.js` File
 
-Update the project's base URLs in the `util.js` file, located in `front-end/view/assets/js/utils`:
+Update the project's base URL in the `util.js` file, located in `front-end/view/assets/js/utils`:
 
 ```javascript
 window.globalApiUrl = 'http://localhost/l5-test/api/';
-window.globalSiteUrl = 'http://localhost/l5-test/';
 ```
 
 Replace the values according to the development or production environment.
@@ -142,6 +142,8 @@ Edit the `Config.php` file, located in the `system` folder, with the database an
 
 ### 3.1. Database Settings
 
+Adjust the settings according to the database access credentials created in the previous step.
+
 ```php
 /**
  * Database connection settings.
@@ -154,6 +156,8 @@ define('DB_PASSCODE', '');
 ```
 
 ### 3.2. System URLs
+
+Update the URLs according to your project's directory.
 
 ```php
 /**

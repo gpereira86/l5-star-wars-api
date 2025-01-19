@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     getApiData(apiUrl, movieId);
 
-    console.info("May the Force be with you!");
+    console.info("The force will be with you, always.");
 
     setTimeout(() => {
         hideSpinner(document.body);
