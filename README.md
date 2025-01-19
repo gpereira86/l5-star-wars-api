@@ -1,6 +1,6 @@
 # Star Wars Site/API - L5 Test
 
-### **Bem-vindo ao Star Wars Site/API - L5 Test! <=**
+### **Bem-vindo ao Star Wars Site/API - L5 Test!**
 
 A aplicação já está disponível online e pode ser acessada pelo link abaixo:
 
