@@ -1,0 +1,14 @@
+** ATENÇÃO! **
+
+Para acessar a rota da API: '/api/log-data/query?{API-KEY-REQUIRED}', é necessário fornecer uma chave de API válida.
+Essa chave pode ser encontrada na tabela 'users' do banco de dados e novas chaves podem ser adicionadas manualmente.
+
+Chave de API do usuário ADMIN para uso imediato: '3f5a8c8d0b72c1d8d9f1'
+
+
+** ATTENTION! **
+
+To access the API route: '/api/log-data/query?{API-KEY-REQUIRED}', a valid API key must be provided.
+This key can be found in the 'users' table of the database, and new keys can be added manually.
+
+API key for the ADMIN user for immediate use: '3f5a8c8d0b72c1d8d9f1'
