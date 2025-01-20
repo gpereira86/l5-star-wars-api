@@ -19,5 +19,5 @@ During the development of the project, the following improvements were implement
 
 ---
 These improvements were implemented to make the system more efficient, secure, and user-friendly, providing an enhanced experience for users and better control for administrators.
-
+-
 > **Note:** The software is scalable in terms of integration with external APIs. For potential changes, polymorphism may be required, but in general, it is possible to replace the API data provider without significant difficulties.

@@ -22,10 +22,3 @@ Essas melhorias foram implementadas com o intuito de tornar o sistema mais efici
 -
 
 > **Nota:** O software é escalável no que diz respeito à integração com APIs externas. Para eventuais alterações, pode ser necessário o uso de polimorfismo, mas, de forma geral, é possível substituir o fornecedor de dados da API sem grandes dificuldades.
-
-
-
-
-
-
-

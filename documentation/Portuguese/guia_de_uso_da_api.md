@@ -106,14 +106,14 @@ Exemplo:
       }
       ```
 
-### 5. **Registrar Logs**
-Essa categoria registra cada requisição realizada para API, inclusive a si mesma.
+### 5. **Registros de Logs**
+Essa categoria recupera os registros de log gravados para cada requisição realizada para API, inclusive a si mesma.
 
 Necessita de uma API KEY para acesso.
 
 - **URL**: /api/log-data/query
   - **Método**: GET
-    - **Descrição**: Registra uma entrada de log no sistema.
+    - **Descrição**: Recupera os registros de log no sistema.
       - **Formato da query (Exemplo)**:
       ```json
         Parâmetros: 

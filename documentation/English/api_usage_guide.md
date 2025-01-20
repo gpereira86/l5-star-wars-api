@@ -111,13 +111,12 @@ Example:
     ```
 
 ### 5. **Log Requests**
-This category logs every request made to the API, including requests to itself.
-
+This category retrieves the log records saved for each request made to the API, including to itself.
 Requires an API KEY for access.
 
 - **URL**: /api/log-data/query
   - **Method**: GET
-    - **Description**: Registers a log entry in the system.
+    - **Description**: Retrieves the log records in the system.
       - **Query Format (Example)**:
       ```json
         Parameters: 
