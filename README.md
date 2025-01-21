@@ -24,9 +24,9 @@ ___
 
 Projeto em PHP 7.4 para Criação de Back-end de API
 
-Este projeto visa o desenvolvimento de um back-end para uma API que consome dados de uma API externa, utilizando exclusivamente ferramentas nativas do PHP 7.4. Para realizar as requisições à API externa, será utilizado o cURL, sem a dependência de pacotes externos, bibliotecas ou frameworks.
+Desenvolvimento de um back-end para uma API que consome dados de uma API externa, utilizando exclusivamente ferramentas nativas do PHP 7.4. Para realizar as requisições à API externa, foi utilizado o cURL, sem a dependência de pacotes externos, bibliotecas ou frameworks.
 
-No front-end, o projeto será desenvolvido utilizando HTML e JavaScript, com o layout sendo construído tanto com CSS quanto com Bootstrap. Isso garantirá uma interface responsiva, intuitiva e personalizada, proporcionando uma experiência de usuário agradável em diferentes dispositivos.<br>
+No front-end, o projeto foi desenvolvido utilizando HTML e JavaScript, com o layout sendo construído tanto com CSS quanto com Bootstrap. Isso garante uma interface responsiva, intuitiva e personalizada, proporcionando uma experiência de usuário agradável em diferentes dispositivos.<br>
 
 ### Instalação:
 
@@ -48,11 +48,11 @@ ___
 
 ## Getting Started - English
 
-PHP 7.4 Project for Creating a Back-end API
+Project in PHP 7.4 for Back-End API Development
 
-This project focuses on developing a back-end for an API that consumes data from an external API, using only native PHP 7.4 tools. cURL will be used for making requests to the external API, without relying on external packages, libraries, or frameworks.
+Development of a back-end for an API that consumes data from an external API, using exclusively native tools of PHP 7.4. To perform requests to the external API, cURL was used, avoiding the dependency on external packages, libraries, or frameworks.
 
-On the front-end, the project will be developed using HTML and JavaScript, with the layout built using both CSS and Bootstrap. This will ensure a responsive, intuitive, and customized interface, providing a pleasant user experience across different devices.<br>
+On the front end, the project was developed using HTML and JavaScript, with the layout built using both CSS and Bootstrap. This ensures a responsive, intuitive, and customized interface, providing a pleasant user experience across different devices.<br>
 
 ### Installation:
 
